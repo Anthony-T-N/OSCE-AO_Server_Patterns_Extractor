@@ -30,7 +30,7 @@ class Common_Class
             std::cout << "[!] Temp filename/location: " << temp_filename << "\n\n";
             download_file(av_url, temp_filename);
         }
-        void download_file(const char* url, const char* full_pathname)
+        static void download_file(const char* url, const char* full_pathname)
         {
             std::cout << "[!] Downloading the following: " << "\n";
             std::cout << url << "\n";
@@ -59,8 +59,6 @@ class Common_Class
         }
         void comment_server_section()
         {
-            // Function uses: <iostream>, <fstream>, <string>, <filesystem>
-
             // Function must occur after function directories_structure().
             std::ifstream input_file;
             std::cout << "[!] Opening temp.ini for reading;" << "\n";
@@ -128,14 +126,14 @@ class Common_Class
             std::filesystem::create_directories(root_folder_name + "/pattern/icrc");
             current_root_folder = root_folder_name;
         }
-        std::string sig_builder(std::string extracted_string)
+        static std::string sig_builder(std::string extracted_string)
         {
             // Function uses: <string>
             // Assumes extracted string has been processed by the url_builder(str) function.
             extracted_string.erase(extracted_string.find_last_of(".") + 1);
             return extracted_string + "sig";
         }
-        std::string url_builder(std::string extracted_string)
+        static std::string url_builder(std::string extracted_string)
         {
             // Function uses: <string>
             extracted_string.erase(extracted_string.find_first_of(","));
@@ -143,14 +141,14 @@ class Common_Class
             std::string final_string = first_section + extracted_string;
             return final_string;
         }
-        std::string file_download_name(std::string url_name)
+        static std::string file_download_name(std::string url_name)
         {
             url_name.erase(0, url_name.find_last_of("/") + 1);
             return url_name;
         }
 };
 
-/*
+
 class ICRC_Class
 {
     public:
@@ -174,28 +172,43 @@ class ICRC_Class
                 if (input_file_line.find("icrc") != std::string::npos)
                 {
                     // Note: Function carried from main cpp file.
-                    std::string extracted_url = url_builder(input_file_line);
-                    std::string full_download_path = current_root_folder + "\\pattern\\icrc\\" + file_download_name(extracted_url);
+                    std::string extracted_url = Common_Class::url_builder(input_file_line);
+                    std::string full_download_path = current_root_folder + "\\pattern\\icrc\\" + Common_Class::file_download_name(extracted_url);
 
                     char extracted_url_char[FILENAME_MAX];
                     char full_download_path_char[FILENAME_MAX];
 
                     strcpy(extracted_url_char, extracted_url.c_str());
                     strcpy(full_download_path_char, full_download_path.c_str());
-                    download_file(extracted_url_char, full_download_path_char);
+                    Common_Class::download_file(extracted_url_char, full_download_path_char);
 
-                    extracted_url = sig_builder(extracted_url);
-                    full_download_path = current_root_folder + "\\pattern\\icrc\\" + file_download_name(sig_builder(extracted_url));
+                    extracted_url = Common_Class::sig_builder(extracted_url);
+                    full_download_path = current_root_folder + "\\pattern\\icrc\\" + Common_Class::file_download_name(Common_Class::sig_builder(extracted_url));
 
                     strcpy(extracted_url_char, extracted_url.c_str());
                     strcpy(full_download_path_char, full_download_path.c_str());
-                    download_file(extracted_url_char, full_download_path_char);
+                    Common_Class::download_file(extracted_url_char, full_download_path_char);
                 }
             }
             input_file.close();
         }
 };
-*/
+
+class VSAPI_Class
+{
+    public:
+        void VSAPI_pattern_identification()
+        {
+            // Read server.ini file.
+            std::ifstream input_file;
+            std::cout << "[!] Opening server.ini for reading;" << "\n";
+            if (std::filesystem::exists(current_root_folder + "/server.ini") == false)
+            {
+                std::cout << "[-] Unable to open server.ini;" << "\n";
+                return;
+            }
+        }
+};
 
 int main()
 {
@@ -207,10 +220,22 @@ int main()
     std::cout << "=======================================" << "\n\n";
 
     // TODO: Provide options here;
-    Common_Class baseline;
-    baseline.extract_serverini_file();
-    baseline.directories_structure();
-    baseline.comment_server_section();
+    Common_Class baseline_obj;
+    baseline_obj.extract_serverini_file();
+    baseline_obj.directories_structure();
+    baseline_obj.comment_server_section();
+    std::cout << "Select Option:" << "\n";
+    if (option == 1)
+    {
+        ICRC_Class icrc_obj;
+        icrc_obj.icrc_pattern_identification();
+    }
+    else if (option == 2)
+    {
+        VSAPI_Class vsapi_obj;
+        vsapi_obj.VSAPI_pattern_identification();
+    }
+    
 
     std::cout << "[!] END" << "\n";
     std::cout << "[!] Exiting..." << "\n\n";
