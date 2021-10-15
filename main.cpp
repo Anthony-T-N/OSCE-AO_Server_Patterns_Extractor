@@ -171,7 +171,6 @@ class ICRC_Class
                 // Go through all lines in the "server.ini" file until a line contains "icrc".
                 if (input_file_line.find("icrc") != std::string::npos)
                 {
-                    // Note: Function carried from main cpp file.
                     std::string extracted_url = Common_Class::url_builder(input_file_line);
                     std::string full_download_path = current_root_folder + "\\pattern\\icrc\\" + Common_Class::file_download_name(extracted_url);
 
@@ -197,7 +196,7 @@ class ICRC_Class
 class VSAPI_Class
 {
     public:
-        void VSAPI_pattern_identification()
+        void vsapi_pattern_identification()
         {
             // Read server.ini file.
             std::ifstream input_file;
@@ -207,6 +206,38 @@ class VSAPI_Class
                 std::cout << "[-] Unable to open server.ini;" << "\n";
                 return;
             }
+            input_file.open(current_root_folder + "/server.ini");
+            std::string input_file_line;
+            while (std::getline(input_file, input_file_line))
+            {
+                // Go through all lines in the "server.ini" file until a line contains "icrc".
+                if (input_file_line.find("v_") != std::string::npos)
+                {
+                    std::cout << input_file_line << "\n";
+                    std::string extracted_url = Common_Class::url_builder(input_file_line);
+                    std::cout << extracted_url << "\n";
+                    std::string full_download_path = current_root_folder + "\\pattern\\" + Common_Class::file_download_name(extracted_url);
+                    std::cout << full_download_path << "\n";
+                    //char extracted_url_char[FILENAME_MAX];
+                    //char full_download_path_char[FILENAME_MAX];
+                    
+                    /*
+                    
+
+                    strcpy(extracted_url_char, extracted_url.c_str());
+                    strcpy(full_download_path_char, full_download_path.c_str());
+                    Common_Class::download_file(extracted_url_char, full_download_path_char);
+
+                    extracted_url = Common_Class::sig_builder(extracted_url);
+                    full_download_path = current_root_folder + "\\pattern\\icrc\\" + Common_Class::file_download_name(Common_Class::sig_builder(extracted_url));
+
+                    strcpy(extracted_url_char, extracted_url.c_str());
+                    strcpy(full_download_path_char, full_download_path.c_str());
+                    Common_Class::download_file(extracted_url_char, full_download_path_char);
+                    */
+                }
+            }
+            input_file.close();
         }
 };
 
@@ -225,18 +256,18 @@ int main()
     baseline_obj.directories_structure();
     baseline_obj.comment_server_section();
     std::cout << "Select Option:" << "\n";
-    if (option == 1)
+    std::string user_input;
+    std::getline(std::cin, user_input);
+    if (user_input == "1")
     {
         ICRC_Class icrc_obj;
         icrc_obj.icrc_pattern_identification();
     }
-    else if (option == 2)
+    else if (user_input == "2")
     {
         VSAPI_Class vsapi_obj;
-        vsapi_obj.VSAPI_pattern_identification();
+        vsapi_obj.vsapi_pattern_identification();
     }
-    
-
     std::cout << "[!] END" << "\n";
     std::cout << "[!] Exiting..." << "\n\n";
     system("pause");
@@ -258,6 +289,6 @@ Brief : Console application used to assist with constructing URLs used to downlo
 === Flow map ===
 
 Options 1/2 -> 1 -> extract_serverini_file(); -> directories_structure(); -> comment_server_section(); -> icrc_pattern_identification();
-            -> 2 -> extract_serverini_file(); -> directories_structure(); -> comment_server_section();
+            -> 2 -> extract_serverini_file(); -> directories_structure(); -> comment_server_section(); -> vsapi_pattern_identification();
 
 */
