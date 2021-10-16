@@ -72,7 +72,7 @@ class Common_Class
 
             std::ofstream output_file;
             output_file.open(current_root_folder + "/server.ini");
-            std::cout << "[+] Created server.ini successfully;" << "\n\n";
+            std::cout << "[+] Created server.ini successfully;" << "\n";
 
             // Cannot edit individual lines of an existing text file. Edited copy will need to be made.
             std::string input_file_line;
@@ -83,7 +83,7 @@ class Common_Class
                 if (input_file_line.find("[Server]") != std::string::npos)
                 {
                     std::cout << "[+] [Server] Section Found;" << "\n";
-                    std::cout << input_file_line << "\n\n";
+                    //std::cout << input_file_line << "\n\n";
                     server_section_found = true;
                     commenting_enabled = true;
                     output_file << input_file_line << "\n";
@@ -210,20 +210,20 @@ class VSAPI_Class
             std::string input_file_line;
             while (std::getline(input_file, input_file_line))
             {
-                // Go through all lines in the "server.ini" file until a line contains "icrc".
-                if (input_file_line.find("v_") != std::string::npos)
+                // Go through all lines in the "server.ini" file until a line contains "vsapi".
+                if (input_file_line.find("v_") != std::string::npos && input_file_line.find("P.4") != std::string::npos || input_file_line.find("vsapi") != std::string::npos && input_file_line.find("P.4") != std::string::npos)
                 {
                     std::cout << input_file_line << "\n";
                     std::string extracted_url = Common_Class::url_builder(input_file_line);
                     std::cout << extracted_url << "\n";
                     std::string full_download_path = current_root_folder + "\\pattern\\" + Common_Class::file_download_name(extracted_url);
-                    std::cout << full_download_path << "\n";
-                    //char extracted_url_char[FILENAME_MAX];
-                    //char full_download_path_char[FILENAME_MAX];
+                    std::cout << full_download_path << "\n\n";
+                    
+                    char extracted_url_char[FILENAME_MAX];
+                    char full_download_path_char[FILENAME_MAX];
                     
                     /*
                     
-
                     strcpy(extracted_url_char, extracted_url.c_str());
                     strcpy(full_download_path_char, full_download_path.c_str());
                     Common_Class::download_file(extracted_url_char, full_download_path_char);
