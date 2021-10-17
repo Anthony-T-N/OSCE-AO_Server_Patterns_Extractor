@@ -222,19 +222,16 @@ class VSAPI_Class
                     char extracted_url_char[FILENAME_MAX];
                     char full_download_path_char[FILENAME_MAX];
                     
-                    /*
-                    
                     strcpy(extracted_url_char, extracted_url.c_str());
                     strcpy(full_download_path_char, full_download_path.c_str());
                     Common_Class::download_file(extracted_url_char, full_download_path_char);
 
                     extracted_url = Common_Class::sig_builder(extracted_url);
-                    full_download_path = current_root_folder + "\\pattern\\icrc\\" + Common_Class::file_download_name(Common_Class::sig_builder(extracted_url));
+                    full_download_path = current_root_folder + "\\pattern\\" + Common_Class::file_download_name(Common_Class::sig_builder(extracted_url));
 
                     strcpy(extracted_url_char, extracted_url.c_str());
                     strcpy(full_download_path_char, full_download_path.c_str());
                     Common_Class::download_file(extracted_url_char, full_download_path_char);
-                    */
                 }
             }
             input_file.close();
@@ -255,18 +252,24 @@ int main()
     baseline_obj.extract_serverini_file();
     baseline_obj.directories_structure();
     baseline_obj.comment_server_section();
-    std::cout << "Select Option:" << "\n";
+    std::cout << "Select an option:" << "\n";
+    std::cout << "1) Download ICRC (Smart Scan Pattern(s)) files" << "\n";
+    std::cout << "2) Download VSAPI (Virus Pattern(s)) files" << "\n";
+    std::cout << "Selection ?: ";
     std::string user_input;
     std::getline(std::cin, user_input);
+    std::cout << "\n";
     if (user_input == "1")
     {
         ICRC_Class icrc_obj;
         icrc_obj.icrc_pattern_identification();
+        std::cout << "[+] Completed downloading ICRC pattern files" << "\n\n";
     }
     else if (user_input == "2")
     {
         VSAPI_Class vsapi_obj;
         vsapi_obj.vsapi_pattern_identification();
+        std::cout << "[+] Completed downloading VSAPI pattern files" << "\n\n";
     }
     std::cout << "[!] END" << "\n";
     std::cout << "[!] Exiting..." << "\n\n";
@@ -282,9 +285,9 @@ Brief : Console application used to assist with constructing URLs used to downlo
 [Version 1]
 
 === Minimum Functions ===
-[-] Reimplement functions of Smart_Scan_Pattern_Extractor-URL_Builder. Organised as a class file.
+[+] Reimplement functions of Smart_Scan_Pattern_Extractor-URL_Builder. Organised as a class file.
 [-] Replicate functions of Smart_Scan_Pattern_Extractor-URL_Builder and target towards to "Virus Pattern(s)".
-[-] ApplyObject-oriented programming.
+[-] Apply Object-oriented programming.
 
 === Flow map ===
 
