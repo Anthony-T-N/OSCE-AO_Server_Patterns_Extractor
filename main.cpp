@@ -105,7 +105,7 @@ class Common_Class
             if (server_section_found == false)
             {
                 std::cout << "[-] WARNING: [Server] Section was not found;" << "\n";
-                std::cout << "[-] Proceed with caution;" << "\n";
+                std::cout << "[!] Proceed with caution;" << "\n";
             }
             remove("temp.ini");
             std::cout << "[+] Deleted temp.ini successfully;" << "\n\n";
@@ -148,7 +148,6 @@ class Common_Class
         }
 };
 
-
 class ICRC_Class
 {
     public:
@@ -156,12 +155,11 @@ class ICRC_Class
         {
             // Function uses: <iostream>, <fstream>, <string>, <filesystem>
 
-            // Read server.ini file.
             std::ifstream input_file;
-            std::cout << "[!] Opening server.ini for reading;" << "\n";
+            std::cout << "[!] Opening server.ini for reading;" << "\n\n";
             if (std::filesystem::exists(current_root_folder + "/server.ini") == false)
             {
-                std::cout << "[-] Unable to open server.ini;" << "\n";
+                std::cout << "[-] Unable to open server.ini;" << "\n\n";
                 return;
             }
             input_file.open(current_root_folder + "/server.ini");
@@ -200,10 +198,10 @@ class VSAPI_Class
         {
             // Read server.ini file.
             std::ifstream input_file;
-            std::cout << "[!] Opening server.ini for reading;" << "\n";
+            std::cout << "[!] Opening server.ini for reading;" << "\n\n";
             if (std::filesystem::exists(current_root_folder + "/server.ini") == false)
             {
-                std::cout << "[-] Unable to open server.ini;" << "\n";
+                std::cout << "[-] Unable to open server.ini;" << "\n\n";
                 return;
             }
             input_file.open(current_root_folder + "/server.ini");
@@ -242,20 +240,20 @@ int main()
 {
     std::cout << "=======================================" << "\n";
     std::cout << "- OSCE-AO_Server_Patterns_Extractor console application" << "\n";
-    std::cout << "- Console Application Version: 0.5" << "\n";
+    std::cout << "- Console Application Version: 1" << "\n";
     std::cout << "- Created By: Anthony N." << "\n";
     std::cout << "- Current location of executable: " << std::filesystem::current_path() << "\n";
     std::cout << "=======================================" << "\n\n";
 
-    // TODO: Provide options here;
     Common_Class baseline_obj;
     baseline_obj.extract_serverini_file();
     baseline_obj.directories_structure();
     baseline_obj.comment_server_section();
     std::cout << "Select an option:" << "\n";
-    std::cout << "1) Download ICRC (Smart Scan Pattern(s)) files" << "\n";
-    std::cout << "2) Download VSAPI (Virus Pattern(s)) files" << "\n";
-    std::cout << "Selection ?: ";
+    std::cout << "[1] Download ICRC (Smart Scan Pattern(s)) files" << "\n";
+    std::cout << "[2] Download VSAPI (Virus Pattern(s)) files" << "\n";
+    std::cout << "Selection ?:" << "\n";
+    std::cout << "> ";
     std::string user_input;
     std::getline(std::cin, user_input);
     std::cout << "\n";
@@ -286,7 +284,7 @@ Brief : Console application used to assist with constructing URLs used to downlo
 
 === Minimum Functions ===
 [+] Reimplement functions of Smart_Scan_Pattern_Extractor-URL_Builder. Organised as a class file.
-[-] Replicate functions of Smart_Scan_Pattern_Extractor-URL_Builder and target towards to "Virus Pattern(s)".
+[+] Replicate functions of Smart_Scan_Pattern_Extractor-URL_Builder and target towards to "Virus Pattern(s)".
 [-] Apply Object-oriented programming.
 
 === Flow map ===
