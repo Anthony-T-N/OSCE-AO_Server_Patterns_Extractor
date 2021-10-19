@@ -164,6 +164,8 @@ class ICRC_Class
             }
             input_file.open(current_root_folder + "/server.ini");
             std::string input_file_line;
+            float progress = 0.0;
+            int bar_width = 100;
             while (std::getline(input_file, input_file_line))
             {
                 // Go through all lines in the "server.ini" file until a line contains "icrc".
@@ -185,6 +187,27 @@ class ICRC_Class
                     strcpy(extracted_url_char, extracted_url.c_str());
                     strcpy(full_download_path_char, full_download_path.c_str());
                     Common_Class::download_file(extracted_url_char, full_download_path_char);
+
+                    std::cout << "[";
+                    int pos = bar_width * progress;
+                    for (int i = 0; i < bar_width; i++)
+                    {
+                        if (i < pos)
+                        {
+                            std::cout << "=";
+                        }
+                        else if (i == pos)
+                        {
+                            std::cout << ">";
+                        }
+                        else
+                        {
+                            std::cout << " ";
+                        }
+                    }
+                    std::cout << "] " << int(progress * 100.0) << " %\n";
+                    progress += 0.07142857;
+                    std::cout << "\n";
                 }
             }
             input_file.close();
@@ -211,11 +234,8 @@ class VSAPI_Class
                 // Go through all lines in the "server.ini" file until a line contains "vsapi".
                 if (input_file_line.find("v_") != std::string::npos && input_file_line.find("P.4") != std::string::npos || input_file_line.find("vsapi") != std::string::npos && input_file_line.find("P.4") != std::string::npos)
                 {
-                    std::cout << input_file_line << "\n";
                     std::string extracted_url = Common_Class::url_builder(input_file_line);
-                    std::cout << extracted_url << "\n";
                     std::string full_download_path = current_root_folder + "\\pattern\\" + Common_Class::file_download_name(extracted_url);
-                    std::cout << full_download_path << "\n\n";
                     
                     char extracted_url_char[FILENAME_MAX];
                     char full_download_path_char[FILENAME_MAX];
@@ -244,6 +264,15 @@ int main()
     std::cout << "- Created By: Anthony N." << "\n";
     std::cout << "- Current location of executable: " << std::filesystem::current_path() << "\n";
     std::cout << "=======================================" << "\n\n";
+
+    // https://gist.github.com/vratiu/9780109
+    std::cout << "\033[31m" << "TEST" << "\033[0m" << "\n";
+
+    std::cout << "\[\033[1;37m\]"  << "TEST2" << "\033[0m" << "\n";
+
+    std::cout << "END" << "\n";
+
+    return 0;
 
     Common_Class baseline_obj;
     baseline_obj.extract_serverini_file();
@@ -286,6 +315,7 @@ Brief : Console application used to assist with constructing URLs used to downlo
 [+] Reimplement functions of Smart_Scan_Pattern_Extractor-URL_Builder. Organised as a class file.
 [+] Replicate functions of Smart_Scan_Pattern_Extractor-URL_Builder and target towards to "Virus Pattern(s)".
 [-] Apply Object-oriented programming.
+[-] Progress bar during downloads. 
 
 === Flow map ===
 
