@@ -64,7 +64,7 @@ class Common_Class
             std::cout << "[!] Opening temp.ini for reading;" << "\n";
             if (std::filesystem::exists("temp.ini") == false)
             {
-                std::cout << "[-] Unable to open temp.ini;" << "\n";
+                std::cout << "\033[4;31m" << "[-] Unable to open temp.ini;" << "\033[0m" << "\n";
                 return;
             }
             input_file.open("temp.ini");
@@ -104,7 +104,7 @@ class Common_Class
             output_file.close();
             if (server_section_found == false)
             {
-                std::cout << "[-] WARNING: [Server] Section was not found;" << "\n";
+                std::cout << "\033[4;31m" << "[-] WARNING: [Server] Section was not found;" << "\033[0m" << "\n";
                 std::cout << "[!] Proceed with caution;" << "\n";
             }
             remove("temp.ini");
@@ -159,7 +159,7 @@ class ICRC_Class
             std::cout << "[!] Opening server.ini for reading;" << "\n\n";
             if (std::filesystem::exists(current_root_folder + "/server.ini") == false)
             {
-                std::cout << "[-] Unable to open server.ini;" << "\n\n";
+                std::cout << "\033[4;31m" << "[-] Unable to open server.ini;" << "\033[0m" << "\n\n";
                 return;
             }
             input_file.open(current_root_folder + "/server.ini");
@@ -224,7 +224,7 @@ class VSAPI_Class
             std::cout << "[!] Opening server.ini for reading;" << "\n\n";
             if (std::filesystem::exists(current_root_folder + "/server.ini") == false)
             {
-                std::cout << "[-] Unable to open server.ini;" << "\n\n";
+                std::cout << "\033[4;31m" << "[-] Unable to open server.ini;" << "\033[0m" << "\n\n";
                 return;
             }
             input_file.open(current_root_folder + "/server.ini");
@@ -268,11 +268,18 @@ int main()
     // https://gist.github.com/vratiu/9780109
     std::cout << "\033[31m" << "TEST" << "\033[0m" << "\n";
 
+    std::cout << "\033[4;31m" << "TEST" << "\033[0m" << "\n";
+
     std::cout << "\[\033[1;37m\]"  << "TEST2" << "\033[0m" << "\n";
+
+    std::cout << "\[\033[0;97m\]" << "TEST3" << "\033[0m" << "\n";
+
+    std::cout << "\[\033[4;37m\]" << "TEST3" << "\033[0m" << "\n";
+
 
     std::cout << "END" << "\n";
 
-    return 0;
+    //return 0;
 
     Common_Class baseline_obj;
     baseline_obj.extract_serverini_file();
@@ -315,7 +322,7 @@ Brief : Console application used to assist with constructing URLs used to downlo
 [+] Reimplement functions of Smart_Scan_Pattern_Extractor-URL_Builder. Organised as a class file.
 [+] Replicate functions of Smart_Scan_Pattern_Extractor-URL_Builder and target towards to "Virus Pattern(s)".
 [-] Apply Object-oriented programming.
-[-] Progress bar during downloads. 
+[+] Progress bar during downloads. 
 
 === Flow map ===
 
