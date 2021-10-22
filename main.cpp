@@ -146,6 +146,29 @@ class Common_Class
             url_name.erase(0, url_name.find_last_of("/") + 1);
             return url_name;
         }
+        static void downloading_progress_bar(float &progress, int &bar_width)
+        {
+            std::cout << "\033[1;97m" << "[" << "\033[0m";
+            int pos = bar_width * progress;
+            for (int i = 0; i < bar_width; i++)
+            {
+                if (i < pos)
+                {
+                    std::cout << "\033[1;97m" << "=" << "\033[0m";
+                }
+                else if (i == pos)
+                {
+                    std::cout << "\033[1;97m" << ">" << "\033[0m";
+                }
+                else
+                {
+                    std::cout << " ";
+                }
+            }
+            std::cout << "\033[1;97m" << "] " << "\033[0m" << int(progress * 100.0) << " %\n";
+            progress += 0.07142857;
+            std::cout << "\n";
+        }
 };
 
 class ICRC_Class
@@ -188,26 +211,8 @@ class ICRC_Class
                     strcpy(full_download_path_char, full_download_path.c_str());
                     Common_Class::download_file(extracted_url_char, full_download_path_char);
 
-                    std::cout << "[";
-                    int pos = bar_width * progress;
-                    for (int i = 0; i < bar_width; i++)
-                    {
-                        if (i < pos)
-                        {
-                            std::cout << "=";
-                        }
-                        else if (i == pos)
-                        {
-                            std::cout << ">";
-                        }
-                        else
-                        {
-                            std::cout << " ";
-                        }
-                    }
-                    std::cout << "] " << int(progress * 100.0) << " %\n";
-                    progress += 0.07142857;
-                    std::cout << "\n";
+                    Common_Class::downloading_progress_bar(progress, bar_width);
+
                 }
             }
             input_file.close();
@@ -264,22 +269,6 @@ int main()
     std::cout << "- Created By: Anthony N." << "\n";
     std::cout << "- Current location of executable: " << std::filesystem::current_path() << "\n";
     std::cout << "=======================================" << "\n\n";
-
-    // https://gist.github.com/vratiu/9780109
-    std::cout << "\033[31m" << "TEST" << "\033[0m" << "\n";
-
-    std::cout << "\033[4;31m" << "TEST" << "\033[0m" << "\n";
-
-    std::cout << "\[\033[1;37m\]"  << "TEST2" << "\033[0m" << "\n";
-
-    std::cout << "\[\033[0;97m\]" << "TEST3" << "\033[0m" << "\n";
-
-    std::cout << "\[\033[4;37m\]" << "TEST3" << "\033[0m" << "\n";
-
-
-    std::cout << "END" << "\n";
-
-    //return 0;
 
     Common_Class baseline_obj;
     baseline_obj.extract_serverini_file();
