@@ -9,8 +9,11 @@
 // https://stackoverflow.com/questions/21873048/getting-an-error-fopen-this-function-or-variable-may-be-unsafe-when-complin/21873153
 #pragma warning(disable:4996);
 
+// Global Variables
 std::string current_root_folder = "";
 static std::string first_section = "http://osce14-p.activeupdate.trendmicro.com/activeupdate/";
+float progress = 0.0;
+int bar_width = 100;
 
 class Common_Class
 {       
@@ -169,6 +172,27 @@ class Common_Class
             progress += 0.07142857;
             std::cout << "\n";
         }
+        static void download_file_allocation(std::string &input_file_line, std::string download_path)
+        {
+            std::string extracted_url = Common_Class::url_builder(input_file_line);
+            std::string full_download_path = current_root_folder + download_path + Common_Class::file_download_name(extracted_url);
+
+            char extracted_url_char[FILENAME_MAX];
+            char full_download_path_char[FILENAME_MAX];
+
+            strcpy(extracted_url_char, extracted_url.c_str());
+            strcpy(full_download_path_char, full_download_path.c_str());
+            Common_Class::download_file(extracted_url_char, full_download_path_char);
+
+            extracted_url = Common_Class::sig_builder(extracted_url);
+            full_download_path = current_root_folder + download_path + Common_Class::file_download_name(Common_Class::sig_builder(extracted_url));
+
+            strcpy(extracted_url_char, extracted_url.c_str());
+            strcpy(full_download_path_char, full_download_path.c_str());
+            Common_Class::download_file(extracted_url_char, full_download_path_char);
+
+            Common_Class::downloading_progress_bar(progress, bar_width);
+        }
 };
 
 class ICRC_Class
@@ -178,6 +202,7 @@ class ICRC_Class
         {
             // Function uses: <iostream>, <fstream>, <string>, <filesystem>
 
+            std::string icrc_download_path = "\\pattern\\icrc\\";
             std::ifstream input_file;
             std::cout << "[!] Opening server.ini for reading;" << "\n\n";
             if (std::filesystem::exists(current_root_folder + "/server.ini") == false)
@@ -187,32 +212,12 @@ class ICRC_Class
             }
             input_file.open(current_root_folder + "/server.ini");
             std::string input_file_line;
-            float progress = 0.0;
-            int bar_width = 100;
             while (std::getline(input_file, input_file_line))
             {
                 // Go through all lines in the "server.ini" file until a line contains "icrc".
                 if (input_file_line.find("icrc") != std::string::npos)
                 {
-                    std::string extracted_url = Common_Class::url_builder(input_file_line);
-                    std::string full_download_path = current_root_folder + "\\pattern\\icrc\\" + Common_Class::file_download_name(extracted_url);
-
-                    char extracted_url_char[FILENAME_MAX];
-                    char full_download_path_char[FILENAME_MAX];
-
-                    strcpy(extracted_url_char, extracted_url.c_str());
-                    strcpy(full_download_path_char, full_download_path.c_str());
-                    Common_Class::download_file(extracted_url_char, full_download_path_char);
-
-                    extracted_url = Common_Class::sig_builder(extracted_url);
-                    full_download_path = current_root_folder + "\\pattern\\icrc\\" + Common_Class::file_download_name(Common_Class::sig_builder(extracted_url));
-
-                    strcpy(extracted_url_char, extracted_url.c_str());
-                    strcpy(full_download_path_char, full_download_path.c_str());
-                    Common_Class::download_file(extracted_url_char, full_download_path_char);
-
-                    Common_Class::downloading_progress_bar(progress, bar_width);
-
+                    Common_Class::download_file_allocation(input_file_line, icrc_download_path);
                 }
             }
             input_file.close();
@@ -255,6 +260,8 @@ class VSAPI_Class
                     strcpy(extracted_url_char, extracted_url.c_str());
                     strcpy(full_download_path_char, full_download_path.c_str());
                     Common_Class::download_file(extracted_url_char, full_download_path_char);
+
+                    Common_Class::downloading_progress_bar(progress, bar_width);
                 }
             }
             input_file.close();
