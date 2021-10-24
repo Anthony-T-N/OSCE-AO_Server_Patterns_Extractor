@@ -11,7 +11,7 @@
 
 // Global Variables
 std::string current_root_folder = "";
-static std::string first_section = "http://osce14-p.activeupdate.trendmicro.com/activeupdate/";
+const std::string first_section = "http://osce14-p.activeupdate.trendmicro.com/activeupdate/";
 float progress = 0.0;
 int bar_width = 100;
 
@@ -200,9 +200,7 @@ class ICRC_Class
     public:
         void icrc_pattern_identification()
         {
-            // Function uses: <iostream>, <fstream>, <string>, <filesystem>
-
-            std::string icrc_download_path = "\\pattern\\icrc\\";
+            const std::string icrc_download_path = "\\pattern\\icrc\\";
             std::ifstream input_file;
             std::cout << "[!] Opening server.ini for reading;" << "\n\n";
             if (std::filesystem::exists(current_root_folder + "/server.ini") == false)
@@ -229,7 +227,7 @@ class VSAPI_Class
     public:
         void vsapi_pattern_identification()
         {
-            // Read server.ini file.
+            const std::string vsapi_download_path = "\\pattern\\";
             std::ifstream input_file;
             std::cout << "[!] Opening server.ini for reading;" << "\n\n";
             if (std::filesystem::exists(current_root_folder + "/server.ini") == false)
@@ -244,24 +242,7 @@ class VSAPI_Class
                 // Go through all lines in the "server.ini" file until a line contains "vsapi".
                 if (input_file_line.find("v_") != std::string::npos && input_file_line.find("P.4") != std::string::npos || input_file_line.find("vsapi") != std::string::npos && input_file_line.find("P.4") != std::string::npos)
                 {
-                    std::string extracted_url = Common_Class::url_builder(input_file_line);
-                    std::string full_download_path = current_root_folder + "\\pattern\\" + Common_Class::file_download_name(extracted_url);
-                    
-                    char extracted_url_char[FILENAME_MAX];
-                    char full_download_path_char[FILENAME_MAX];
-                    
-                    strcpy(extracted_url_char, extracted_url.c_str());
-                    strcpy(full_download_path_char, full_download_path.c_str());
-                    Common_Class::download_file(extracted_url_char, full_download_path_char);
-
-                    extracted_url = Common_Class::sig_builder(extracted_url);
-                    full_download_path = current_root_folder + "\\pattern\\" + Common_Class::file_download_name(Common_Class::sig_builder(extracted_url));
-
-                    strcpy(extracted_url_char, extracted_url.c_str());
-                    strcpy(full_download_path_char, full_download_path.c_str());
-                    Common_Class::download_file(extracted_url_char, full_download_path_char);
-
-                    Common_Class::downloading_progress_bar(progress, bar_width);
+                    Common_Class::download_file_allocation(input_file_line, vsapi_download_path);
                 }
             }
             input_file.close();
@@ -324,5 +305,4 @@ Brief : Console application used to assist with constructing URLs used to downlo
 
 Options 1/2 -> 1 -> extract_serverini_file(); -> directories_structure(); -> comment_server_section(); -> icrc_pattern_identification();
             -> 2 -> extract_serverini_file(); -> directories_structure(); -> comment_server_section(); -> vsapi_pattern_identification();
-
 */
