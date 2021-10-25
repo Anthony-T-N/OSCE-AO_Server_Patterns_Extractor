@@ -11,9 +11,10 @@
 
 // Global Variables
 std::string current_root_folder = "";
-const std::string first_section = "http://osce14-p.activeupdate.trendmicro.com/activeupdate/";
+const std::string first_url_section = "http://osce14-p.activeupdate.trendmicro.com/activeupdate/";
 float progress = 0.0;
 int bar_width = 100;
+float v_ = 0;
 
 class Common_Class
 {       
@@ -102,6 +103,10 @@ class Common_Class
                     input_file_line = ";" + input_file_line;
                 }
                 output_file << input_file_line << "\n";
+                if (input_file_line.find("v_") != std::string::npos && input_file_line.find("P.4") != std::string::npos || input_file_line.find("vsapi") != std::string::npos && input_file_line.find("P.4") != std::string::npos)
+                {
+                    v_ += 1;
+                }
             }
             input_file.close();
             output_file.close();
@@ -131,17 +136,15 @@ class Common_Class
         }
         static std::string sig_builder(std::string extracted_string)
         {
-            // Function uses: <string>
             // Assumes extracted string has been processed by the url_builder(str) function.
             extracted_string.erase(extracted_string.find_last_of(".") + 1);
             return extracted_string + "sig";
         }
         static std::string url_builder(std::string extracted_string)
         {
-            // Function uses: <string>
             extracted_string.erase(extracted_string.find_first_of(","));
             extracted_string.erase(0, extracted_string.find_first_of("=") + 1);
-            std::string final_string = first_section + extracted_string;
+            std::string final_string = first_url_section + extracted_string;
             return final_string;
         }
         static std::string file_download_name(std::string url_name)
@@ -169,7 +172,10 @@ class Common_Class
                 }
             }
             std::cout << "\033[1;97m" << "] " << "\033[0m" << int(progress * 100.0) << " %\n";
-            progress += 0.07142857;
+            // TODO: Determine total files to download beforehand. 100 / Total number of files = progress.
+            progress += (100 / v_) / 100;
+            std::cout << progress << "\n";
+            //progress += 0.07142857;
             std::cout << "\n";
         }
         static void download_file_allocation(std::string &input_file_line, std::string download_path)
