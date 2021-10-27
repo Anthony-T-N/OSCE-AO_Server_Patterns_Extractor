@@ -12,9 +12,10 @@
 // Global Variables
 std::string current_root_folder = "";
 const std::string first_url_section = "http://osce14-p.activeupdate.trendmicro.com/activeupdate/";
+const std::string generic_download_path = "\\pattern\\";
 float progress = 0.0;
 int bar_width = 100;
-float v_ = 0;
+double v_ = 0;
 
 class Common_Class
 {       
@@ -173,8 +174,8 @@ class Common_Class
             }
             std::cout << "\033[1;97m" << "] " << "\033[0m" << int(progress * 100.0) << " %\n";
             // TODO: Determine total files to download beforehand. 100 / Total number of files = progress.
-            progress += (100 / v_) / 100;
-            std::cout << progress << "\n";
+            progress += (100 / (v_ - 1)) / 100;
+            //std::cout << progress << "\n";
             //progress += 0.07142857;
             std::cout << "\n";
         }
@@ -233,7 +234,6 @@ class VSAPI_Class
     public:
         void vsapi_pattern_identification()
         {
-            const std::string vsapi_download_path = "\\pattern\\";
             std::ifstream input_file;
             std::cout << "[!] Opening server.ini for reading;" << "\n\n";
             if (std::filesystem::exists(current_root_folder + "/server.ini") == false)
@@ -248,10 +248,81 @@ class VSAPI_Class
                 // Go through all lines in the "server.ini" file until a line contains "vsapi".
                 if (input_file_line.find("v_") != std::string::npos && input_file_line.find("P.4") != std::string::npos || input_file_line.find("vsapi") != std::string::npos && input_file_line.find("P.4") != std::string::npos)
                 {
-                    Common_Class::download_file_allocation(input_file_line, vsapi_download_path);
+                    Common_Class::download_file_allocation(input_file_line, generic_download_path);
                 }
             }
             input_file.close();
+        }
+};
+
+class TSCPTN_Class
+{
+    public:
+        void tscptn_pattern_identification()
+        {
+            std::ifstream input_file;
+            std::cout << "[!] Opening server.ini for reading;" << "\n\n";
+            if (std::filesystem::exists(current_root_folder + "/server.ini") == false)
+            {
+                std::cout << "\033[4;31m" << "[-] Unable to open server.ini;" << "\033[0m" << "\n\n";
+                return;
+            }
+            input_file.open(current_root_folder + "/server.ini");
+            std::string input_file_line;
+            while (std::getline(input_file, input_file_line))
+            {
+                // Go through all lines in the "server.ini" file until a line contains "tscptn" or "tsc".
+                if (input_file_line.find("tsc") != std::string::npos || input_file_line.find("tscptn") != std::string::npos)
+                {
+                    Common_Class::download_file_allocation(input_file_line, generic_download_path);
+                }
+            }
+            input_file.close();
+        }
+};
+
+class TMWHITE_Class
+{
+    public:
+        void tmwhite_pattern_identification()
+        {
+
+        }
+};
+
+class SSAPTTN_Class
+{
+    public:
+        void ssaptn_pattern_identification()
+        {
+
+        }
+};
+
+class SSPDA6_Class
+{
+    public:
+        void sspda6_pattern_identification()
+        {
+
+        }
+};
+
+class TMFWPTN_Class
+{
+    public:
+        void tmfwptn_pattern_identification()
+        {
+
+        }
+};
+
+class TRENDXLM_Class
+{
+    public:
+        void trendxlm_pattern_identification()
+        {
+
         }
 };
 
@@ -271,6 +342,7 @@ int main()
     std::cout << "Select an option:" << "\n";
     std::cout << "[1] Download ICRC (Smart Scan Pattern(s)) files" << "\n";
     std::cout << "[2] Download VSAPI (Virus Pattern(s)) files" << "\n";
+    std::cout << "[3] Download TSCPTN (Unknown Pattern(s)) files" << "\n";
     std::cout << "Selection ?:" << "\n";
     std::cout << "> ";
     std::string user_input;
@@ -287,6 +359,12 @@ int main()
         VSAPI_Class vsapi_obj;
         vsapi_obj.vsapi_pattern_identification();
         std::cout << "[+] Completed downloading VSAPI pattern files" << "\n\n";
+    }
+    else if (user_input == "3")
+    {
+        TSCPTN_Class tscptn_obj;
+        tscptn_obj.tscptn_pattern_identification();
+        std::cout << "[+] Completed downloading TSCPTN pattern files" << "\n\n";
     }
     std::cout << "[!] END" << "\n";
     std::cout << "[!] Exiting..." << "\n\n";
