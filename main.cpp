@@ -286,16 +286,50 @@ class TMWHITE_Class
     public:
         void tmwhite_pattern_identification()
         {
-
+            std::ifstream input_file;
+            std::cout << "[!] Opening server.ini for reading;" << "\n\n";
+            if (std::filesystem::exists(current_root_folder + "/server.ini") == false)
+            {
+                std::cout << "\033[4;31m" << "[-] Unable to open server.ini;" << "\033[0m" << "\n\n";
+                return;
+            }
+            input_file.open(current_root_folder + "/server.ini");
+            std::string input_file_line;
+            while (std::getline(input_file, input_file_line))
+            {
+                // Go through all lines in the "server.ini" file until a line contains "tscptn" or "tsc".
+                if (input_file_line.find("w_") != std::string::npos || input_file_line.find("tmwhite") != std::string::npos)
+                {
+                    Common_Class::download_file_allocation(input_file_line, generic_download_path);
+                }
+            }
+            input_file.close();
         }
 };
 
-class SSAPTTN_Class
+class SSAPTN_Class
 {
     public:
         void ssaptn_pattern_identification()
         {
-
+            std::ifstream input_file;
+            std::cout << "[!] Opening server.ini for reading;" << "\n\n";
+            if (std::filesystem::exists(current_root_folder + "/server.ini") == false)
+            {
+                std::cout << "\033[4;31m" << "[-] Unable to open server.ini;" << "\033[0m" << "\n\n";
+                return;
+            }
+            input_file.open(current_root_folder + "/server.ini");
+            std::string input_file_line;
+            while (std::getline(input_file, input_file_line))
+            {
+                // Go through all lines in the "server.ini" file until a line contains "tscptn" or "tsc".
+                if (input_file_line.find("ssa_") != std::string::npos || input_file_line.find("ssaptn") != std::string::npos)
+                {
+                    Common_Class::download_file_allocation(input_file_line, generic_download_path);
+                }
+            }
+            input_file.close();
         }
 };
 
@@ -304,7 +338,24 @@ class SSPDA6_Class
     public:
         void sspda6_pattern_identification()
         {
-
+            std::ifstream input_file;
+            std::cout << "[!] Opening server.ini for reading;" << "\n\n";
+            if (std::filesystem::exists(current_root_folder + "/server.ini") == false)
+            {
+                std::cout << "\033[4;31m" << "[-] Unable to open server.ini;" << "\033[0m" << "\n\n";
+                return;
+            }
+            input_file.open(current_root_folder + "/server.ini");
+            std::string input_file_line;
+            while (std::getline(input_file, input_file_line))
+            {
+                // Go through all lines in the "server.ini" file until a line contains "tscptn" or "tsc".
+                if (input_file_line.find("sspda6_") != std::string::npos)
+                {
+                    Common_Class::download_file_allocation(input_file_line, generic_download_path);
+                }
+            }
+            input_file.close();
         }
 };
 
@@ -313,7 +364,7 @@ class TMFWPTN_Class
     public:
         void tmfwptn_pattern_identification()
         {
-
+            // TODO: Download all lines below "tmfwptn" until empty space has been reached.
         }
 };
 
@@ -322,7 +373,24 @@ class TRENDXLM_Class
     public:
         void trendxlm_pattern_identification()
         {
-
+            std::ifstream input_file;
+            std::cout << "[!] Opening server.ini for reading;" << "\n\n";
+            if (std::filesystem::exists(current_root_folder + "/server.ini") == false)
+            {
+                std::cout << "\033[4;31m" << "[-] Unable to open server.ini;" << "\033[0m" << "\n\n";
+                return;
+            }
+            input_file.open(current_root_folder + "/server.ini");
+            std::string input_file_line;
+            while (std::getline(input_file, input_file_line))
+            {
+                // Go through all lines in the "server.ini" file until a line contains "tscptn" or "tsc".
+                if (input_file_line.find("trendxlm_") != std::string::npos)
+                {
+                    Common_Class::download_file_allocation(input_file_line, generic_download_path);
+                }
+            }
+            input_file.close();
         }
 };
 
@@ -343,6 +411,9 @@ int main()
     std::cout << "[1] Download ICRC (Smart Scan Pattern(s)) files" << "\n";
     std::cout << "[2] Download VSAPI (Virus Pattern(s)) files" << "\n";
     std::cout << "[3] Download TSCPTN (Unknown Pattern(s)) files" << "\n";
+    std::cout << "[4] Download TMWHITE (Unknown Pattern(s)) files" << "\n";
+    std::cout << "[5] Download SSAPTN (Unknown Pattern(s)) files" << "\n";
+    std::cout << "[6] Download SSPDA6 (Unknown Pattern(s)) files" << "\n";
     std::cout << "Selection ?:" << "\n";
     std::cout << "> ";
     std::string user_input;
@@ -365,6 +436,34 @@ int main()
         TSCPTN_Class tscptn_obj;
         tscptn_obj.tscptn_pattern_identification();
         std::cout << "[+] Completed downloading TSCPTN pattern files" << "\n\n";
+    }
+    else if (user_input == "4")
+    {
+        TMWHITE_Class tmwhite_obj;
+        tmwhite_obj.tmwhite_pattern_identification();
+        std::cout << "[+] Completed downloading TMWHITE pattern files" << "\n\n";
+    }
+    else if (user_input == "5")
+    {
+        SSAPTN_Class ssaptn_obj;
+        ssaptn_obj.ssaptn_pattern_identification();
+        std::cout << "[+] Completed downloading SSAPTN pattern files" << "\n\n";
+    }
+    else if (user_input == "6")
+    {
+        SSPDA6_Class sspda6_obj;
+        sspda6_obj.sspda6_pattern_identification();
+        std::cout << "[+] Completed downloading SSPDA6 pattern files" << "\n\n";
+    }
+    else if (user_input == "7")
+    {
+        // TODO
+    }
+    else if (user_input == "8")
+    {
+        TRENDXLM_Class trendxlm_obj;
+        trendxlm_obj.trendxlm_pattern_identification();
+        std::cout << "[+] Completed downloading TRENDXLM pattern files" << "\n\n";
     }
     std::cout << "[!] END" << "\n";
     std::cout << "[!] Exiting..." << "\n\n";
