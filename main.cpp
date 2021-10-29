@@ -359,12 +359,37 @@ class SSPDA6_Class
         }
 };
 
+// UNIQUE CLASS
 class TMFWPTN_Class
 {
     public:
         void tmfwptn_pattern_identification()
         {
             // TODO: Download all lines below "tmfwptn" until empty space has been reached.
+            std::ifstream input_file;
+            std::cout << "[!] Opening server.ini for reading;" << "\n\n";
+            if (std::filesystem::exists(current_root_folder + "/server.ini") == false)
+            {
+                std::cout << "\033[4;31m" << "[-] Unable to open server.ini;" << "\033[0m" << "\n\n";
+                return;
+            }
+            input_file.open(current_root_folder + "/server.ini");
+            std::string input_file_line;
+
+            bool tmfwptn_switch = false;
+            while (std::getline(input_file, input_file_line))
+            {
+                if (input_file_line == "")
+                {
+                    tmfwptn_switch = false;
+                }
+                else if (input_file_line.find("tmfwptn") != std::string::npos || tmfwptn_switch == true)
+                {
+                    tmfwptn_switch = true;
+                    Common_Class::download_file_allocation(input_file_line, generic_download_path);
+                }
+            }
+            input_file.close();
         }
 };
 
@@ -414,6 +439,8 @@ int main()
     std::cout << "[4] Download TMWHITE (Unknown Pattern(s)) files" << "\n";
     std::cout << "[5] Download SSAPTN (Unknown Pattern(s)) files" << "\n";
     std::cout << "[6] Download SSPDA6 (Unknown Pattern(s)) files" << "\n";
+    std::cout << "[7] Download TMFWPTN (Unknown Pattern(s)) files" << "\n";
+    std::cout << "[8] Download TRENDXLM (Unknown Pattern(s)) files" << "\n";
     std::cout << "Selection ?:" << "\n";
     std::cout << "> ";
     std::string user_input;
@@ -457,7 +484,9 @@ int main()
     }
     else if (user_input == "7")
     {
-        // TODO
+        TMFWPTN_Class tmfwptn_Class;
+        tmfwptn_Class.tmfwptn_pattern_identification();
+        std::cout << "[+] Completed downloading !!!!!!!!TMFWPTN!!!!!! pattern files" << "\n\n";
     }
     else if (user_input == "8")
     {
@@ -467,6 +496,7 @@ int main()
     }
     std::cout << "[!] END" << "\n";
     std::cout << "[!] Exiting..." << "\n\n";
+    // Don't use sys.
     system("pause");
     return 0;
 }
