@@ -432,67 +432,76 @@ int main()
     baseline_obj.extract_serverini_file();
     baseline_obj.directories_structure();
     baseline_obj.comment_server_section();
-    std::cout << "Select an option:" << "\n";
-    std::cout << "[1] Download ICRC (Smart Scan Pattern(s)) files" << "\n";
-    std::cout << "[2] Download VSAPI (Virus Pattern(s)) files" << "\n";
-    std::cout << "[3] Download TSCPTN (Unknown Pattern(s)) files" << "\n";
-    std::cout << "[4] Download TMWHITE (Unknown Pattern(s)) files" << "\n";
-    std::cout << "[5] Download SSAPTN (Unknown Pattern(s)) files" << "\n";
-    std::cout << "[6] Download SSPDA6 (Unknown Pattern(s)) files" << "\n";
-    std::cout << "[7] Download TMFWPTN (Unknown Pattern(s)) files" << "\n";
-    std::cout << "[8] Download TRENDXLM (Unknown Pattern(s)) files" << "\n";
-    std::cout << "Selection ?:" << "\n";
-    std::cout << "> ";
-    std::string user_input;
-    std::getline(std::cin, user_input);
-    std::cout << "\n";
-    if (user_input == "1")
+    while (true)
     {
-        ICRC_Class icrc_obj;
-        icrc_obj.icrc_pattern_identification();
-        std::cout << "[+] Completed downloading ICRC pattern files" << "\n\n";
-    }
-    else if (user_input == "2")
-    {
-        VSAPI_Class vsapi_obj;
-        vsapi_obj.vsapi_pattern_identification();
-        std::cout << "[+] Completed downloading VSAPI pattern files" << "\n\n";
-    }
-    else if (user_input == "3")
-    {
-        TSCPTN_Class tscptn_obj;
-        tscptn_obj.tscptn_pattern_identification();
-        std::cout << "[+] Completed downloading TSCPTN pattern files" << "\n\n";
-    }
-    else if (user_input == "4")
-    {
-        TMWHITE_Class tmwhite_obj;
-        tmwhite_obj.tmwhite_pattern_identification();
-        std::cout << "[+] Completed downloading TMWHITE pattern files" << "\n\n";
-    }
-    else if (user_input == "5")
-    {
-        SSAPTN_Class ssaptn_obj;
-        ssaptn_obj.ssaptn_pattern_identification();
-        std::cout << "[+] Completed downloading SSAPTN pattern files" << "\n\n";
-    }
-    else if (user_input == "6")
-    {
-        SSPDA6_Class sspda6_obj;
-        sspda6_obj.sspda6_pattern_identification();
-        std::cout << "[+] Completed downloading SSPDA6 pattern files" << "\n\n";
-    }
-    else if (user_input == "7")
-    {
-        TMFWPTN_Class tmfwptn_Class;
-        tmfwptn_Class.tmfwptn_pattern_identification();
-        std::cout << "[+] Completed downloading !!!!!!!!TMFWPTN!!!!!! pattern files" << "\n\n";
-    }
-    else if (user_input == "8")
-    {
-        TRENDXLM_Class trendxlm_obj;
-        trendxlm_obj.trendxlm_pattern_identification();
-        std::cout << "[+] Completed downloading TRENDXLM pattern files" << "\n\n";
+        // TODO: Reset global variables (Example: Progress bar).
+        std::cout << "Select an option:" << "\n";
+        std::cout << "[1] Download ICRC (Smart Scan Pattern(s)) files" << "\n";
+        std::cout << "[2] Download VSAPI (Virus Pattern(s)) files" << "\n";
+        std::cout << "[3] Download TSCPTN (Unknown Pattern(s)) files" << "\n";
+        std::cout << "[4] Download TMWHITE (Unknown Pattern(s)) files" << "\n";
+        std::cout << "[5] Download SSAPTN (Unknown Pattern(s)) files" << "\n";
+        std::cout << "[6] Download SSPDA6 (Unknown Pattern(s)) files" << "\n";
+        std::cout << "[7] Download TMFWPTN (Unknown Pattern(s)) files" << "\n";
+        std::cout << "[8] Download TRENDXLM (Unknown Pattern(s)) files" << "\n";
+        std::cout << "[exit] Exit" << "\n";
+        std::cout << "Selection ?:" << "\n";
+        std::cout << "> ";
+        std::string user_input;
+        std::getline(std::cin, user_input);
+        std::cout << "\n";
+        if (user_input == "1")
+        {
+            ICRC_Class icrc_obj;
+            icrc_obj.icrc_pattern_identification();
+            std::cout << "[+] Completed downloading ICRC pattern files" << "\n\n";
+        }
+        else if (user_input == "2")
+        {
+            VSAPI_Class vsapi_obj;
+            vsapi_obj.vsapi_pattern_identification();
+            std::cout << "[+] Completed downloading VSAPI pattern files" << "\n\n";
+        }
+        else if (user_input == "3")
+        {
+            TSCPTN_Class tscptn_obj;
+            tscptn_obj.tscptn_pattern_identification();
+            std::cout << "[+] Completed downloading TSCPTN pattern files" << "\n\n";
+        }
+        else if (user_input == "4")
+        {
+            TMWHITE_Class tmwhite_obj;
+            tmwhite_obj.tmwhite_pattern_identification();
+            std::cout << "[+] Completed downloading TMWHITE pattern files" << "\n\n";
+        }
+        else if (user_input == "5")
+        {
+            SSAPTN_Class ssaptn_obj;
+            ssaptn_obj.ssaptn_pattern_identification();
+            std::cout << "[+] Completed downloading SSAPTN pattern files" << "\n\n";
+        }
+        else if (user_input == "6")
+        {
+            SSPDA6_Class sspda6_obj;
+            sspda6_obj.sspda6_pattern_identification();
+            std::cout << "[+] Completed downloading SSPDA6 pattern files" << "\n\n";
+        }
+        else if (user_input == "7")
+        {
+            TMFWPTN_Class tmfwptn_Class;
+            tmfwptn_Class.tmfwptn_pattern_identification();
+            std::cout << "[+] Completed downloading !!!!!!!!TMFWPTN!!!!!! pattern files" << "\n\n";
+        }
+        else if (user_input == "8")
+        {
+            TRENDXLM_Class trendxlm_obj;
+            trendxlm_obj.trendxlm_pattern_identification();
+            std::cout << "[+] Completed downloading TRENDXLM pattern files" << "\n\n";
+        }
+        else if (user_input == "exit")
+        {
+            break;
+        }
     }
     std::cout << "[!] END" << "\n";
     std::cout << "[!] Exiting..." << "\n\n";
