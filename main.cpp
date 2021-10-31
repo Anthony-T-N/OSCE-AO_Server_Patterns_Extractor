@@ -58,6 +58,7 @@ class Common_Class
                 {
                     fprintf(stderr, "curl_easy_perform() failed: %s\n",
                         curl_easy_strerror(res));
+                    std::cout << "\033[31m" << "WARNING WARNING WARNING" << "\033[0m" << "\n";
                 }
                 fclose(fp);
             }
@@ -419,6 +420,85 @@ class TRENDXLM_Class
         }
 };
 
+class ENGINE_Class
+{
+    public:
+        void engine_pattern_identification()
+        {
+            // TODO: Download all lines below "tmfwptn" until empty space has been reached.
+            std::ifstream input_file;
+            std::cout << "[!] Opening server.ini for reading;" << "\n\n";
+            if (std::filesystem::exists(current_root_folder + "/server.ini") == false)
+            {
+                std::cout << "\033[4;31m" << "[-] Unable to open server.ini;" << "\033[0m" << "\n\n";
+                return;
+            }
+            input_file.open(current_root_folder + "/server.ini");
+            std::string input_file_line;
+
+            bool engine_switch = false;
+            std::filesystem::create_directories(current_root_folder + "/engine/");
+
+            /*
+            * Requires additional conditions to detect and download. For now, skip
+            E.22000010=SSENGINE_SSAPI32_V6,engine/ssapi32_v6/SSAPI32_v62-4015.zip,6.2.4015,592305,6.0.1000
+            E.22000020=SSENGINE_SSAPI64_V6,engine/ssapi64_v6/SSAPI64_v62-4015.zip,6.2.4015,897467,6.0.1000
+            */
+
+            while (std::getline(input_file, input_file_line))
+            {
+                if (input_file_line == "")
+                {
+                    engine_switch = false;
+                }
+                else if (input_file_line.find("[ENGINE]") != std::string::npos)
+                {
+                    engine_switch = true;
+                }
+                else if (engine_switch == true && input_file_line.find("SSAPI") == std::string::npos)
+                {
+                    // E.4=VSAPI32_NT_I386,engine/engv_nt386_v12500-1004.zip,12.500.1004,1350445,6.510.1002
+
+                    // 1) 
+                    std::string extracted_url = input_file_line;
+                    extracted_url.erase(0, extracted_url.find_first_of(",") + 1);
+                    // engine/engv_nt386_v12500-1004.zip,12.500.1004,1350445,6.510.1002
+                    std::cout << "DEBUG: " << extracted_url << "\n";
+                    extracted_url.erase(extracted_url.find_first_of(","));
+                    // engine/engv_nt386_v12500-1004.zip
+                    std::cout << "DEBUG: " << extracted_url << "\n";
+                    extracted_url = first_url_section + extracted_url;
+                    // URL Building ends here.
+                    // http://osce14-p.activeupdate.trendmicro.com/activeupdate/engine/engv_nt386_v12500-1004.zip
+                    std::cout << "DEBUG: " << extracted_url << "\n";
+                    
+                    std::string full_download_path = current_root_folder + "\\engine\\" + Common_Class::file_download_name(extracted_url);
+
+                    char extracted_url_char[FILENAME_MAX];
+                    char full_download_path_char[FILENAME_MAX];
+
+                    strcpy(extracted_url_char, extracted_url.c_str());
+                    strcpy(full_download_path_char, full_download_path.c_str());
+                    Common_Class::download_file(extracted_url_char, full_download_path_char);
+
+                    // SIG BUILDING HERE
+                    std::cout << "SIG BUILDING HERE" << "\n";
+                    extracted_url = Common_Class::sig_builder(extracted_url);
+                    std::cout << "DEBUG: " << extracted_url << "\n";
+                    full_download_path = current_root_folder + "\\engine\\" + Common_Class::file_download_name(Common_Class::sig_builder(extracted_url));
+                    std::cout << "DEBUG: " << full_download_path << "\n";
+
+                    strcpy(extracted_url_char, extracted_url.c_str());
+                    strcpy(full_download_path_char, full_download_path.c_str());
+                    Common_Class::download_file(extracted_url_char, full_download_path_char);
+
+                    //Common_Class::download_file_allocation(input_file_line, "\\engine\\");
+                }
+            }
+            input_file.close();
+        }
+};
+
 int main()
 {
     std::cout << "=======================================" << "\n";
@@ -444,6 +524,7 @@ int main()
         std::cout << "[6] Download SSPDA6 (Unknown Pattern(s)) files" << "\n";
         std::cout << "[7] Download TMFWPTN (Unknown Pattern(s)) files" << "\n";
         std::cout << "[8] Download TRENDXLM (Unknown Pattern(s)) files" << "\n";
+        std::cout << "[9] Download ENGINE (Unknown Pattern(s)) files" << "\n";
         std::cout << "[exit] Exit" << "\n";
         std::cout << "Selection ?:" << "\n";
         std::cout << "> ";
@@ -497,6 +578,12 @@ int main()
             TRENDXLM_Class trendxlm_obj;
             trendxlm_obj.trendxlm_pattern_identification();
             std::cout << "[+] Completed downloading TRENDXLM pattern files" << "\n\n";
+        }
+        else if (user_input == "9")
+        {
+            ENGINE_Class engine_obj;
+            engine_obj.engine_pattern_identification();
+            std::cout << "[+] Completed downloading engine pattern files" << "\n\n";
         }
         else if (user_input == "exit")
         {
