@@ -361,6 +361,7 @@ class SSPDA6_Class
 };
 
 // UNIQUE CLASS
+// pattern/rr/rr_1.10727.00.zip
 class TMFWPTN_Class
 {
     public:
@@ -455,6 +456,16 @@ class ENGINE_Class
                 {
                     engine_switch = true;
                 }
+                // If line contains two /. Create folder between both /
+                else if (engine_switch == true && input_file_line.find_first_of("/") != input_file_line.find_last_of("/"))
+                {
+                    std::string temp_path = input_file_line;
+                    temp_path.erase(0, temp_path.find_first_of("/"));
+                    temp_path.erase(temp_path.find_last_of("/") + 1);
+                    std::cout << temp_path << "\n";
+                    std::filesystem::create_directories(current_root_folder + "/engine/" + temp_path);
+                    system("pause");
+                }
                 else if (engine_switch == true && input_file_line.find("SSAPI") == std::string::npos)
                 {
                     // E.4=VSAPI32_NT_I386,engine/engv_nt386_v12500-1004.zip,12.500.1004,1350445,6.510.1002
@@ -491,8 +502,6 @@ class ENGINE_Class
                     strcpy(extracted_url_char, extracted_url.c_str());
                     strcpy(full_download_path_char, full_download_path.c_str());
                     Common_Class::download_file(extracted_url_char, full_download_path_char);
-
-                    //Common_Class::download_file_allocation(input_file_line, "\\engine\\");
                 }
             }
             input_file.close();
