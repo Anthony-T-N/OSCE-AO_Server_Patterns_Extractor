@@ -438,13 +438,9 @@ class ENGINE_Class
             std::string input_file_line;
 
             bool engine_switch = false;
+            bool SSAPI_switch = false;
+            std::string ssapi_temp_path = "";
             std::filesystem::create_directories(current_root_folder + "/engine/");
-
-            /*
-            * Requires additional conditions to detect and download. For now, skip
-            E.22000010=SSENGINE_SSAPI32_V6,engine/ssapi32_v6/SSAPI32_v62-4015.zip,6.2.4015,592305,6.0.1000
-            E.22000020=SSENGINE_SSAPI64_V6,engine/ssapi64_v6/SSAPI64_v62-4015.zip,6.2.4015,897467,6.0.1000
-            */
 
             while (std::getline(input_file, input_file_line))
             {
@@ -455,22 +451,29 @@ class ENGINE_Class
                 else if (input_file_line.find("[ENGINE]") != std::string::npos)
                 {
                     engine_switch = true;
+                    continue;
                 }
                 // If line contains two /. Create folder between both /
-                else if (engine_switch == true && input_file_line.find_first_of("/") != input_file_line.find_last_of("/"))
+                if (engine_switch == true && input_file_line.find_first_of("/") != input_file_line.find_last_of("/"))
                 {
+                    /*
+                    * Requires additional conditions to detect and download. For now, skip
+                    E.22000010=SSENGINE_SSAPI32_V6,engine/ssapi32_v6/SSAPI32_v62-4015.zip,6.2.4015,592305,6.0.1000
+                    E.22000020=SSENGINE_SSAPI64_V6,engine/ssapi64_v6/SSAPI64_v62-4015.zip,6.2.4015,897467,6.0.1000
+                    */
+
                     std::string temp_path = input_file_line;
                     temp_path.erase(0, temp_path.find_first_of("/"));
                     temp_path.erase(temp_path.find_last_of("/") + 1);
                     std::cout << temp_path << "\n";
-                    std::filesystem::create_directories(current_root_folder + "/engine/" + temp_path);
+                    std::filesystem::create_directories(current_root_folder + "\\engine\\" + temp_path);
+                    ssapi_temp_path = temp_path;
+                    SSAPI_switch = true;
                     system("pause");
                 }
-                else if (engine_switch == true && input_file_line.find("SSAPI") == std::string::npos)
+                if (engine_switch == true)
                 {
                     // E.4=VSAPI32_NT_I386,engine/engv_nt386_v12500-1004.zip,12.500.1004,1350445,6.510.1002
-
-                    // 1) 
                     std::string extracted_url = input_file_line;
                     extracted_url.erase(0, extracted_url.find_first_of(",") + 1);
                     // engine/engv_nt386_v12500-1004.zip,12.500.1004,1350445,6.510.1002
@@ -483,7 +486,15 @@ class ENGINE_Class
                     // http://osce14-p.activeupdate.trendmicro.com/activeupdate/engine/engv_nt386_v12500-1004.zip
                     std::cout << "DEBUG: " << extracted_url << "\n";
                     
-                    std::string full_download_path = current_root_folder + "\\engine\\" + Common_Class::file_download_name(extracted_url);
+                    std::string full_download_path = "";
+                    if (SSAPI_switch == false)
+                    {
+                        full_download_path = current_root_folder + "\\engine\\" + Common_Class::file_download_name(extracted_url);
+                    }
+                    else
+                    {
+                       full_download_path = current_root_folder + "\\engine\\" + ssapi_temp_path + Common_Class::file_download_name(extracted_url);
+                    }
 
                     char extracted_url_char[FILENAME_MAX];
                     char full_download_path_char[FILENAME_MAX];
@@ -496,12 +507,20 @@ class ENGINE_Class
                     std::cout << "SIG BUILDING HERE" << "\n";
                     extracted_url = Common_Class::sig_builder(extracted_url);
                     std::cout << "DEBUG: " << extracted_url << "\n";
-                    full_download_path = current_root_folder + "\\engine\\" + Common_Class::file_download_name(Common_Class::sig_builder(extracted_url));
+                    if (SSAPI_switch == false)
+                    {
+                        full_download_path = current_root_folder + "\\engine\\" + Common_Class::file_download_name(Common_Class::sig_builder(extracted_url));
+                    }
+                    else
+                    {
+                        full_download_path = current_root_folder + "\\engine\\" + ssapi_temp_path + Common_Class::file_download_name(Common_Class::sig_builder(extracted_url));
+                    }
                     std::cout << "DEBUG: " << full_download_path << "\n";
 
                     strcpy(extracted_url_char, extracted_url.c_str());
                     strcpy(full_download_path_char, full_download_path.c_str());
                     Common_Class::download_file(extracted_url_char, full_download_path_char);
+                    SSAPI_switch = false;
                 }
             }
             input_file.close();
