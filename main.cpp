@@ -65,7 +65,7 @@ class Common_Class
         }
         void comment_server_section()
         {
-            // Function must occur after function directories_structure().
+            // Function must occur after function root_folder_creation().
             std::ifstream input_file;
             std::cout << "[!] Opening temp.ini for reading;" << "\n";
             if (std::filesystem::exists("temp.ini") == false)
@@ -120,7 +120,7 @@ class Common_Class
             remove("temp.ini");
             std::cout << "[+] Deleted temp.ini successfully;" << "\n\n";
         }
-        void directories_structure()
+        void root_folder_creation()
         {
             time_t rawtime;
             struct tm* timeinfo;
@@ -133,7 +133,7 @@ class Common_Class
             std::cout << "[!] Root folder name: " << buffer << "\n\n";
 
             std::string root_folder_name(buffer);
-            std::filesystem::create_directories(root_folder_name + "/pattern/icrc");
+            std::filesystem::create_directories(root_folder_name);
             current_root_folder = root_folder_name;
         }
         static std::string sig_builder(std::string extracted_string)
@@ -201,6 +201,12 @@ class Common_Class
 
             Common_Class::downloading_progress_bar(progress, bar_width);
         }
+
+        // TODO: Consolidate all common elements of all classes into a static method.
+        static void open_ini()
+        {
+
+        }
 };
 
 class ICRC_Class
@@ -208,6 +214,7 @@ class ICRC_Class
     public:
         void icrc_pattern_identification()
         {
+            std::filesystem::create_directories(current_root_folder + "/pattern/icrc");
             const std::string icrc_download_path = "\\pattern\\icrc\\";
             std::ifstream input_file;
             std::cout << "[!] Opening server.ini for reading;" << "\n\n";
@@ -367,7 +374,6 @@ class TMFWPTN_Class
     public:
         void tmfwptn_pattern_identification()
         {
-            // TODO: Download all lines below "tmfwptn" until empty space has been reached.
             std::ifstream input_file;
             std::cout << "[!] Opening server.ini for reading;" << "\n\n";
             if (std::filesystem::exists(current_root_folder + "/server.ini") == false)
@@ -457,19 +463,16 @@ class ENGINE_Class
                 if (engine_switch == true && input_file_line.find_first_of("/") != input_file_line.find_last_of("/"))
                 {
                     /*
-                    * Requires additional conditions to detect and download. For now, skip
                     E.22000010=SSENGINE_SSAPI32_V6,engine/ssapi32_v6/SSAPI32_v62-4015.zip,6.2.4015,592305,6.0.1000
                     E.22000020=SSENGINE_SSAPI64_V6,engine/ssapi64_v6/SSAPI64_v62-4015.zip,6.2.4015,897467,6.0.1000
                     */
 
-                    std::string temp_path = input_file_line;
-                    temp_path.erase(0, temp_path.find_first_of("/"));
-                    temp_path.erase(temp_path.find_last_of("/") + 1);
-                    std::cout << temp_path << "\n";
-                    std::filesystem::create_directories(current_root_folder + "\\engine\\" + temp_path);
-                    ssapi_temp_path = temp_path;
+                    std::string temp_line = input_file_line;
+                    temp_line.erase(0, temp_line.find_first_of("/"));
+                    temp_line.erase(temp_line.find_last_of("/") + 1);
+                    std::filesystem::create_directories(current_root_folder + "\\engine\\" + temp_line);
+                    ssapi_temp_path = temp_line;
                     SSAPI_switch = true;
-                    system("pause");
                 }
                 if (engine_switch == true)
                 {
@@ -538,10 +541,10 @@ int main()
 
     Common_Class baseline_obj;
     baseline_obj.extract_serverini_file();
-    baseline_obj.directories_structure();
+    baseline_obj.root_folder_creation();
     baseline_obj.comment_server_section();
 
-    std::vector<std::string> tesdt = 
+    std::vector<std::string> options_vector = 
     {
         "Download ICRC (Smart Scan Pattern(s)) files",
         "Download VSAPI (Virus Pattern(s)) files",
@@ -558,9 +561,9 @@ int main()
         // TODO: Reset global variables (Example: Progress bar).
         // TODO: Place options in vector.
         std::cout << "Select an option:" << "\n";
-        for (int i = 0; i <= tesdt.size() - 1; i++)
+        for (int i = 0; i <= options_vector.size() - 1; i++)
         {
-            std::cout << "[" << i << "]" << " " << tesdt[i] << "\n";
+            std::cout << "[" << i << "]" << " " << options_vector[i] << "\n";
         }
         std::cout << "[exit] Exit" << "\n";
         std::cout << "Selection ?:" << "\n";
@@ -570,8 +573,8 @@ int main()
         std::cout << "\n";
         if (user_input == "0")
         {
-            ICRC_Class icrc_obj;
-            icrc_obj.icrc_pattern_identification();
+            // Temp objects -- Check
+            ICRC_Class().icrc_pattern_identification();
             std::cout << "[+] Completed downloading ICRC pattern files" << "\n\n";
         }
         else if (user_input == "1")
@@ -649,8 +652,8 @@ Brief : Console application used to assist with constructing URLs used to downlo
 
 === Flow map ===
 
-Options 1/2 -> 1 -> extract_serverini_file(); -> directories_structure(); -> comment_server_section(); -> icrc_pattern_identification();
-            -> 2 -> extract_serverini_file(); -> directories_structure(); -> comment_server_section(); -> vsapi_pattern_identification();
+Options 1/2 -> 1 -> extract_serverini_file(); -> root_folder_creation(); -> comment_server_section(); -> icrc_pattern_identification();
+            -> 2 -> extract_serverini_file(); -> root_folder_creation(); -> comment_server_section(); -> vsapi_pattern_identification();
 
 === Full Directory Structure ===
 
