@@ -205,7 +205,12 @@ class Common_Class
         // TODO: Consolidate all common elements of all classes into a static method.
         static void open_ini()
         {
-
+            std::cout << "[!] Opening server.ini for reading;" << "\n\n";
+            if (std::filesystem::exists(current_root_folder + "/server.ini") == false)
+            {
+                std::cout << "\033[4;31m" << "[-] Unable to open server.ini;" << "\033[0m" << "\n\n";
+                return;
+            }
         }
 };
 
@@ -216,14 +221,11 @@ class ICRC_Class
         {
             std::filesystem::create_directories(current_root_folder + "/pattern/icrc");
             const std::string icrc_download_path = "\\pattern\\icrc\\";
+            
             std::ifstream input_file;
-            std::cout << "[!] Opening server.ini for reading;" << "\n\n";
-            if (std::filesystem::exists(current_root_folder + "/server.ini") == false)
-            {
-                std::cout << "\033[4;31m" << "[-] Unable to open server.ini;" << "\033[0m" << "\n\n";
-                return;
-            }
+            Common_Class::open_ini();
             input_file.open(current_root_folder + "/server.ini");
+
             std::string input_file_line;
             while (std::getline(input_file, input_file_line))
             {
@@ -243,13 +245,9 @@ class VSAPI_Class
         void vsapi_pattern_identification()
         {
             std::ifstream input_file;
-            std::cout << "[!] Opening server.ini for reading;" << "\n\n";
-            if (std::filesystem::exists(current_root_folder + "/server.ini") == false)
-            {
-                std::cout << "\033[4;31m" << "[-] Unable to open server.ini;" << "\033[0m" << "\n\n";
-                return;
-            }
+            Common_Class::open_ini();
             input_file.open(current_root_folder + "/server.ini");
+
             std::string input_file_line;
             while (std::getline(input_file, input_file_line))
             {
@@ -269,13 +267,9 @@ class TSCPTN_Class
         void tscptn_pattern_identification()
         {
             std::ifstream input_file;
-            std::cout << "[!] Opening server.ini for reading;" << "\n\n";
-            if (std::filesystem::exists(current_root_folder + "/server.ini") == false)
-            {
-                std::cout << "\033[4;31m" << "[-] Unable to open server.ini;" << "\033[0m" << "\n\n";
-                return;
-            }
+            Common_Class::open_ini();
             input_file.open(current_root_folder + "/server.ini");
+
             std::string input_file_line;
             while (std::getline(input_file, input_file_line))
             {
@@ -295,17 +289,12 @@ class TMWHITE_Class
         void tmwhite_pattern_identification()
         {
             std::ifstream input_file;
-            std::cout << "[!] Opening server.ini for reading;" << "\n\n";
-            if (std::filesystem::exists(current_root_folder + "/server.ini") == false)
-            {
-                std::cout << "\033[4;31m" << "[-] Unable to open server.ini;" << "\033[0m" << "\n\n";
-                return;
-            }
+            Common_Class::open_ini();
             input_file.open(current_root_folder + "/server.ini");
+
             std::string input_file_line;
             while (std::getline(input_file, input_file_line))
             {
-                // Go through all lines in the "server.ini" file until a line contains "tscptn" or "tsc".
                 if (input_file_line.find("w_") != std::string::npos || input_file_line.find("tmwhite") != std::string::npos)
                 {
                     Common_Class::download_file_allocation(input_file_line, generic_download_path);
@@ -321,17 +310,12 @@ class SSAPTN_Class
         void ssaptn_pattern_identification()
         {
             std::ifstream input_file;
-            std::cout << "[!] Opening server.ini for reading;" << "\n\n";
-            if (std::filesystem::exists(current_root_folder + "/server.ini") == false)
-            {
-                std::cout << "\033[4;31m" << "[-] Unable to open server.ini;" << "\033[0m" << "\n\n";
-                return;
-            }
+            Common_Class::open_ini();
             input_file.open(current_root_folder + "/server.ini");
+
             std::string input_file_line;
             while (std::getline(input_file, input_file_line))
             {
-                // Go through all lines in the "server.ini" file until a line contains "tscptn" or "tsc".
                 if (input_file_line.find("ssa_") != std::string::npos || input_file_line.find("ssaptn") != std::string::npos)
                 {
                     Common_Class::download_file_allocation(input_file_line, generic_download_path);
@@ -347,17 +331,12 @@ class SSPDA6_Class
         void sspda6_pattern_identification()
         {
             std::ifstream input_file;
-            std::cout << "[!] Opening server.ini for reading;" << "\n\n";
-            if (std::filesystem::exists(current_root_folder + "/server.ini") == false)
-            {
-                std::cout << "\033[4;31m" << "[-] Unable to open server.ini;" << "\033[0m" << "\n\n";
-                return;
-            }
+            Common_Class::open_ini();
             input_file.open(current_root_folder + "/server.ini");
+
             std::string input_file_line;
             while (std::getline(input_file, input_file_line))
             {
-                // Go through all lines in the "server.ini" file until a line contains "tscptn" or "tsc".
                 if (input_file_line.find("sspda6_") != std::string::npos)
                 {
                     Common_Class::download_file_allocation(input_file_line, generic_download_path);
@@ -374,17 +353,14 @@ class TMFWPTN_Class
     public:
         void tmfwptn_pattern_identification()
         {
-            std::ifstream input_file;
-            std::cout << "[!] Opening server.ini for reading;" << "\n\n";
-            if (std::filesystem::exists(current_root_folder + "/server.ini") == false)
-            {
-                std::cout << "\033[4;31m" << "[-] Unable to open server.ini;" << "\033[0m" << "\n\n";
-                return;
-            }
-            input_file.open(current_root_folder + "/server.ini");
-            std::string input_file_line;
-
             bool tmfwptn_switch = false;
+
+            std::ifstream input_file;
+            Common_Class::open_ini();
+            input_file.open(current_root_folder + "/server.ini");
+
+            // INFO: Identifies line with "tmfwptn" and extract all lines below it.
+            std::string input_file_line;
             while (std::getline(input_file, input_file_line))
             {
                 if (input_file_line == "")
@@ -407,13 +383,9 @@ class TRENDXLM_Class
         void trendxlm_pattern_identification()
         {
             std::ifstream input_file;
-            std::cout << "[!] Opening server.ini for reading;" << "\n\n";
-            if (std::filesystem::exists(current_root_folder + "/server.ini") == false)
-            {
-                std::cout << "\033[4;31m" << "[-] Unable to open server.ini;" << "\033[0m" << "\n\n";
-                return;
-            }
+            Common_Class::open_ini();
             input_file.open(current_root_folder + "/server.ini");
+
             std::string input_file_line;
             while (std::getline(input_file, input_file_line))
             {
@@ -432,22 +404,17 @@ class ENGINE_Class
     public:
         void engine_pattern_identification()
         {
-            // TODO: Download all lines below "tmfwptn" until empty space has been reached.
-            std::ifstream input_file;
-            std::cout << "[!] Opening server.ini for reading;" << "\n\n";
-            if (std::filesystem::exists(current_root_folder + "/server.ini") == false)
-            {
-                std::cout << "\033[4;31m" << "[-] Unable to open server.ini;" << "\033[0m" << "\n\n";
-                return;
-            }
-            input_file.open(current_root_folder + "/server.ini");
-            std::string input_file_line;
-
+            // INFO: Class specific operations here.
             bool engine_switch = false;
             bool SSAPI_switch = false;
             std::string ssapi_temp_path = "";
             std::filesystem::create_directories(current_root_folder + "/engine/");
 
+            std::ifstream input_file;
+            Common_Class::open_ini();
+            input_file.open(current_root_folder + "/server.ini");
+            
+            std::string input_file_line;
             while (std::getline(input_file, input_file_line))
             {
                 if (input_file_line == "")
@@ -559,7 +526,6 @@ int main()
     while (true)
     {
         // TODO: Reset global variables (Example: Progress bar).
-        // TODO: Place options in vector.
         std::cout << "Select an option:" << "\n";
         for (int i = 0; i <= options_vector.size() - 1; i++)
         {
@@ -662,5 +628,4 @@ Options 1/2 -> 1 -> extract_serverini_file(); -> root_folder_creation(); -> comm
            - pattern - icrc
                      - rr
            - product - osce14 - enu
-
 */
