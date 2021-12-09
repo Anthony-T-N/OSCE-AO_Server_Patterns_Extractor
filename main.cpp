@@ -526,6 +526,7 @@ int main()
     while (true)
     {
         // TODO: Reset global variables (Example: Progress bar).
+        // TODO: Other patterns cannot be downloaded unless ICRC patterns are downloaded first. Error unknown.
         std::cout << "Select an option:" << "\n";
         for (int i = 0; i <= options_vector.size() - 1; i++)
         {
@@ -614,7 +615,10 @@ Brief : Console application used to assist with constructing URLs used to downlo
 [+] Reimplement functions of Smart_Scan_Pattern_Extractor-URL_Builder. Organised as a class file.
 [+] Replicate functions of Smart_Scan_Pattern_Extractor-URL_Builder and target towards to "Virus Pattern(s)".
 [-] Apply Object-oriented programming.
-[+] Progress bar during downloads. 
+[+] Progress bar during downloads.
+
+=== TODO ===
+- Determine what the unknown patterns refer to. Example: What is ssapi or tmfwptn.
 
 === Flow map ===
 
@@ -628,4 +632,17 @@ Options 1/2 -> 1 -> extract_serverini_file(); -> root_folder_creation(); -> comm
            - pattern - icrc
                      - rr
            - product - osce14 - enu
+
+=== Components ===
+What we know so far:
+http://files.trendmicro.com/products/scanmail/SMEX-12.0%20SP1-GM-1464-AG.pdf
+
+[PATTERN]
+- vsapi & v_ : Virus Scan API
+- tscptn & tsc_ : 
+- tmwhite & w_ : IntelliTrap 
+- ssaptn & ssa_ : 
+
+- DCE: Damage Cleanup Engine
+- DCT: Damage Cleanup Template
 */
