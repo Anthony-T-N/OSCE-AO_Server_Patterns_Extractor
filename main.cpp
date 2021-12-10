@@ -135,6 +135,7 @@ class Common_Class
             std::string root_folder_name(buffer);
             std::filesystem::create_directories(root_folder_name);
             current_root_folder = root_folder_name;
+            std::filesystem::create_directories(current_root_folder + "/pattern");
         }
         static std::string sig_builder(std::string extracted_string)
         {
@@ -527,6 +528,7 @@ int main()
     {
         // TODO: Reset global variables (Example: Progress bar).
         // TODO: Other patterns cannot be downloaded unless ICRC patterns are downloaded first. Error unknown.
+        // -> Solution: ICRC class/function creates "pattern" folder. Other class/functions do not.
         std::cout << "Select an option:" << "\n";
         for (int i = 0; i <= options_vector.size() - 1; i++)
         {
@@ -641,7 +643,10 @@ http://files.trendmicro.com/products/scanmail/SMEX-12.0%20SP1-GM-1464-AG.pdf
 - vsapi & v_ : Virus Scan API
 - tscptn & tsc_ : 
 - tmwhite & w_ : IntelliTrap 
-- ssaptn & ssa_ : 
+- ssaptn & ssa_ : Spyware Active-monitoring Pattern
+- sspda6
+- icrc
+- tmfwptn
 
 - DCE: Damage Cleanup Engine
 - DCT: Damage Cleanup Template
