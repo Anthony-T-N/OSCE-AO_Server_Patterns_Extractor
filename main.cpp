@@ -5,6 +5,7 @@
 #include <filesystem>
 #include <fstream>
 #include <string>
+#include <map>
 
 // https://stackoverflow.com/questions/21873048/getting-an-error-fopen-this-function-or-variable-may-be-unsafe-when-complin/21873153
 #pragma warning(disable:4996);
@@ -106,9 +107,26 @@ class Common_Class
                     input_file_line = ";" + input_file_line;
                 }
                 output_file << input_file_line << "\n";
+                
+                std::map<std::string, int> my_map;
+
                 // Temporary if statement to test progress bar.
                 if (input_file_line.find("v_") != std::string::npos && input_file_line.find("P.4") != std::string::npos || input_file_line.find("vsapi") != std::string::npos && input_file_line.find("P.4") != std::string::npos)
                 {
+                    my_map["vsapi"]++;
+                    /*
+                    for (int i = 0; i < my_map.size(); i++)
+                    {
+                        std::cout << my_map["vsapi"] << "\n";
+                    }
+                    */
+                    std::cout << my_map["vsapi"] << "\n";
+                    v_ += 1;
+                }
+                // Go through all lines in the "server.ini" file until a line contains "icrc".
+                if (input_file_line.find("icrc") != std::string::npos)
+                {
+                    my_map["icrc"]++;
                     v_ += 1;
                 }
                 // Potential solution to record total number of lines for each components:
