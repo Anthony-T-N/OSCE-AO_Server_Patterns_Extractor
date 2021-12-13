@@ -86,6 +86,9 @@ class Common_Class
             std::string input_file_line;
             bool commenting_enabled = false;
             bool server_section_found = false;
+
+            std::map<std::string, int> component_map;
+
             while (std::getline(input_file, input_file_line))
             {
                 if (input_file_line.find("[Server]") != std::string::npos)
@@ -108,30 +111,34 @@ class Common_Class
                 }
                 output_file << input_file_line << "\n";
                 
-                std::map<std::string, int> my_map;
+                
 
                 // Temporary if statement to test progress bar.
                 if (input_file_line.find("v_") != std::string::npos && input_file_line.find("P.4") != std::string::npos || input_file_line.find("vsapi") != std::string::npos && input_file_line.find("P.4") != std::string::npos)
                 {
-                    my_map["vsapi"]++;
-                    /*
-                    for (int i = 0; i < my_map.size(); i++)
+                    component_map["vsapi"]++;
+                    for (int i = 0; i < component_map.size(); i++)
                     {
-                        std::cout << my_map["vsapi"] << "\n";
+                        std::cout << component_map["vsapi"] << "\n";
                     }
-                    */
-                    std::cout << my_map["vsapi"] << "\n";
+                    
+                    std::cout << component_map["vsapi"] << "\n";
                     v_ += 1;
                 }
                 // Go through all lines in the "server.ini" file until a line contains "icrc".
                 if (input_file_line.find("icrc") != std::string::npos)
                 {
-                    my_map["icrc"]++;
+                    component_map["icrc"]++;
                     v_ += 1;
+                }
+                if (input_file_line.find("tsc") != std::string::npos || input_file_line.find("tscptn") != std::string::npos)
+                {
+                    component_map["tscptn"]++;
                 }
                 // Potential solution to record total number of lines for each components:
                 // When commenting out server section, go through the rest of the "server.ini" file and count lines for each component. Count totals stored in dictionary to be later used for displaying the progress bar.
             }
+            std::cout << component_map["icrc"] << "\n";
             input_file.close();
             output_file.close();
             if (server_section_found == false)
