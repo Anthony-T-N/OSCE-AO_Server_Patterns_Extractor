@@ -121,7 +121,6 @@ class Common_Class
                     {
                         std::cout << component_map["vsapi"] << "\n";
                     }
-                    
                     std::cout << component_map["vsapi"] << "\n";
                     v_ += 1;
                 }
@@ -134,6 +133,18 @@ class Common_Class
                 if (input_file_line.find("tsc") != std::string::npos || input_file_line.find("tscptn") != std::string::npos)
                 {
                     component_map["tscptn"]++;
+                }
+                if (input_file_line.find("w_") != std::string::npos || input_file_line.find("tmwhite") != std::string::npos)
+                {
+                    component_map["tmwhite"]++;
+                }
+                if (input_file_line.find("ssa_") != std::string::npos || input_file_line.find("ssaptn") != std::string::npos)
+                {
+                    component_map["ssaptn"]++;
+                }
+                if (input_file_line.find("sspda6_") != std::string::npos)
+                {
+                    component_map["sspda6_"]++;
                 }
                 // Potential solution to record total number of lines for each components:
                 // When commenting out server section, go through the rest of the "server.ini" file and count lines for each component. Count totals stored in dictionary to be later used for displaying the progress bar.
