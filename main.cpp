@@ -146,6 +146,11 @@ class Common_Class
                 {
                     component_map["sspda6_"]++;
                 }
+                // Missing
+                if (input_file_line.find("trendxlm_") != std::string::npos)
+                {
+                    component_map["trendxlm_"]++;
+                }
                 // Potential solution to record total number of lines for each components:
                 // When commenting out server section, go through the rest of the "server.ini" file and count lines for each component. Count totals stored in dictionary to be later used for displaying the progress bar.
             }
