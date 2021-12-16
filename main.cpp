@@ -86,8 +86,9 @@ class Common_Class
             std::string input_file_line;
             bool commenting_enabled = false;
             bool server_section_found = false;
-
+            bool tmfwptn_switch = false;
             std::map<std::string, int> component_map;
+
 
             while (std::getline(input_file, input_file_line))
             {
@@ -111,7 +112,6 @@ class Common_Class
                 }
                 output_file << input_file_line << "\n";
                 
-                
 
                 // Temporary if statement to test progress bar.
                 if (input_file_line.find("v_") != std::string::npos && input_file_line.find("P.4") != std::string::npos || input_file_line.find("vsapi") != std::string::npos && input_file_line.find("P.4") != std::string::npos)
@@ -121,7 +121,6 @@ class Common_Class
                     {
                         std::cout << component_map["vsapi"] << "\n";
                     }
-                    std::cout << component_map["vsapi"] << "\n";
                     v_ += 1;
                 }
                 // Go through all lines in the "server.ini" file until a line contains "icrc".
@@ -146,7 +145,15 @@ class Common_Class
                 {
                     component_map["sspda6_"]++;
                 }
-                // Missing
+                // INFO: Identifies line with "tmfwptn" and extract all lines below it.
+                if (input_file_line.find("tmfwptn") != std::string::npos || tmfwptn_switch == true)
+                {
+                    component_map["tmfwptn"]++;
+                }
+                else if (input_file_line == "")
+                {
+                    tmfwptn_switch = false;
+                }
                 if (input_file_line.find("trendxlm_") != std::string::npos)
                 {
                     component_map["trendxlm_"]++;
@@ -154,6 +161,7 @@ class Common_Class
                 // Potential solution to record total number of lines for each components:
                 // When commenting out server section, go through the rest of the "server.ini" file and count lines for each component. Count totals stored in dictionary to be later used for displaying the progress bar.
             }
+            std::cout << "qqqq" << "\n";
             std::cout << component_map["icrc"] << "\n";
             input_file.close();
             output_file.close();
@@ -164,6 +172,8 @@ class Common_Class
             }
             remove("temp.ini");
             std::cout << "[+] Deleted temp.ini successfully;" << "\n\n";
+            std::cout << "[DEBUG] Section" << "\n";
+
         }
         void root_folder_creation()
         {
