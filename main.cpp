@@ -146,13 +146,14 @@ class Common_Class
                     component_map["sspda6_"]++;
                 }
                 // INFO: Identifies line with "tmfwptn" and extract all lines below it.
-                if (input_file_line.find("tmfwptn") != std::string::npos || tmfwptn_switch == true)
-                {
-                    component_map["tmfwptn"]++;
-                }
-                else if (input_file_line == "")
+                if (input_file_line == "")
                 {
                     tmfwptn_switch = false;
+                }
+                else if (input_file_line.find("tmfwptn") != std::string::npos || tmfwptn_switch == true)
+                {
+                    tmfwptn_switch = true;
+                    component_map["tmfwptn"]++;
                 }
                 if (input_file_line.find("trendxlm_") != std::string::npos)
                 {
@@ -163,6 +164,13 @@ class Common_Class
             }
             std::cout << "qqqq" << "\n";
             std::cout << component_map["icrc"] << "\n";
+            for (auto const& [key, val] : component_map)
+            {
+                std::cout << key        // string (key)
+                    << ':'
+                    << val        // string's value
+                    << std::endl;
+            }
             input_file.close();
             output_file.close();
             if (server_section_found == false)
