@@ -16,6 +16,7 @@ const std::string first_url_section = "http://osce14-p.activeupdate.trendmicro.c
 const std::string generic_download_path = "\\pattern\\";
 float progress = 0.0;
 int bar_width = 100;
+std::map<std::string, int> component_map;
 // Bad variable name.
 double v_ = 0;
 
@@ -87,8 +88,6 @@ class Common_Class
             bool commenting_enabled = false;
             bool server_section_found = false;
             bool tmfwptn_switch = false;
-            std::map<std::string, int> component_map;
-
 
             while (std::getline(input_file, input_file_line))
             {
@@ -117,10 +116,6 @@ class Common_Class
                 if (input_file_line.find("v_") != std::string::npos && input_file_line.find("P.4") != std::string::npos || input_file_line.find("vsapi") != std::string::npos && input_file_line.find("P.4") != std::string::npos)
                 {
                     component_map["vsapi"]++;
-                    for (int i = 0; i < component_map.size(); i++)
-                    {
-                        std::cout << component_map["vsapi"] << "\n";
-                    }
                     v_ += 1;
                 }
                 // Go through all lines in the "server.ini" file until a line contains "icrc".
@@ -163,7 +158,6 @@ class Common_Class
                 // When commenting out server section, go through the rest of the "server.ini" file and count lines for each component. Count totals stored in dictionary to be later used for displaying the progress bar.
             }
             std::cout << "qqqq" << "\n";
-            std::cout << component_map["icrc"] << "\n";
             for (auto const& [key, val] : component_map)
             {
                 std::cout << key        // string (key)
@@ -661,6 +655,7 @@ int main()
         {
             break;
         }
+        progress = 0.0;
     }
     std::cout << "[!] END" << "\n";
     std::cout << "[!] Exiting..." << "\n\n";
