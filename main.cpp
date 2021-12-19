@@ -157,7 +157,7 @@ class Common_Class
                 // Potential solution to record total number of lines for each components:
                 // When commenting out server section, go through the rest of the "server.ini" file and count lines for each component. Count totals stored in dictionary to be later used for displaying the progress bar.
             }
-            std::cout << "qqqq" << "\n";
+            std::cout << "[DEBUG] Component Count Summary" << "\n";
             for (auto const& [key, val] : component_map)
             {
                 std::cout << key        // string (key)
@@ -212,7 +212,7 @@ class Common_Class
             url_name.erase(0, url_name.find_last_of("/") + 1);
             return url_name;
         }
-        static void downloading_progress_bar(float &progress, int &bar_width)
+        static void downloading_progress_bar(float &progress, int &bar_width, double &progress_bar_value)
         {
             std::cout << "\033[1;97m" << "[" << "\033[0m";
             int pos = bar_width * progress;
@@ -231,14 +231,15 @@ class Common_Class
                     std::cout << " ";
                 }
             }
+            // Take component values from component map to replace value at v_.
             std::cout << "\033[1;97m" << "] " << "\033[0m" << int(progress * 100.0) << " %\n";
             // [-] TODO: Determine total files to download beforehand. 100 / Total number of files = progress.
-            progress += (100 / (v_ - 1)) / 100;
+            progress += (100 / (progress_bar_value - 1)) / 100;
             //std::cout << progress << "\n";
             //progress += 0.07142857;
             std::cout << "\n";
         }
-        static void download_file_allocation(std::string &input_file_line, std::string download_path)
+        static void download_file_allocation(std::string &input_file_line, std::string download_path, int &progress_bar_value)
         {
             std::string extracted_url = Common_Class::url_builder(input_file_line);
             std::string full_download_path = current_root_folder + download_path + Common_Class::file_download_name(extracted_url);
@@ -257,7 +258,7 @@ class Common_Class
             strcpy(full_download_path_char, full_download_path.c_str());
             Common_Class::download_file(extracted_url_char, full_download_path_char);
 
-            Common_Class::downloading_progress_bar(progress, bar_width);
+            Common_Class::downloading_progress_bar(progress, bar_width, progress_bar_value);
         }
 
         // TODO: Consolidate all common elements of all classes into a static method.
@@ -290,7 +291,7 @@ class ICRC_Class
                 // Go through all lines in the "server.ini" file until a line contains "icrc".
                 if (input_file_line.find("icrc") != std::string::npos)
                 {
-                    Common_Class::download_file_allocation(input_file_line, icrc_download_path);
+                    Common_Class::download_file_allocation(input_file_line, icrc_download_path, component_map["icrc"]);
                 }
             }
             input_file.close();
@@ -312,7 +313,7 @@ class VSAPI_Class
                 // Go through all lines in the "server.ini" file until a line contains "vsapi".
                 if (input_file_line.find("v_") != std::string::npos && input_file_line.find("P.4") != std::string::npos || input_file_line.find("vsapi") != std::string::npos && input_file_line.find("P.4") != std::string::npos)
                 {
-                    Common_Class::download_file_allocation(input_file_line, generic_download_path);
+                    Common_Class::download_file_allocation(input_file_line, generic_download_path, component_map["vsapi"]);
                 }
             }
             input_file.close();
@@ -334,7 +335,7 @@ class TSCPTN_Class
                 // Go through all lines in the "server.ini" file until a line contains "tscptn" or "tsc".
                 if (input_file_line.find("tsc") != std::string::npos || input_file_line.find("tscptn") != std::string::npos)
                 {
-                    Common_Class::download_file_allocation(input_file_line, generic_download_path);
+                    Common_Class::download_file_allocation(input_file_line, generic_download_path, component_map["tscptn"]);
                 }
             }
             input_file.close();
@@ -355,7 +356,7 @@ class TMWHITE_Class
             {
                 if (input_file_line.find("w_") != std::string::npos || input_file_line.find("tmwhite") != std::string::npos)
                 {
-                    Common_Class::download_file_allocation(input_file_line, generic_download_path);
+                    Common_Class::download_file_allocation(input_file_line, generic_download_path, component_map["tmwhite"]);
                 }
             }
             input_file.close();
@@ -376,7 +377,7 @@ class SSAPTN_Class
             {
                 if (input_file_line.find("ssa_") != std::string::npos || input_file_line.find("ssaptn") != std::string::npos)
                 {
-                    Common_Class::download_file_allocation(input_file_line, generic_download_path);
+                    Common_Class::download_file_allocation(input_file_line, generic_download_path, component_map["ssaptn"]);
                 }
             }
             input_file.close();
@@ -397,7 +398,7 @@ class SSPDA6_Class
             {
                 if (input_file_line.find("sspda6_") != std::string::npos)
                 {
-                    Common_Class::download_file_allocation(input_file_line, generic_download_path);
+                    Common_Class::download_file_allocation(input_file_line, generic_download_path, component_map["sspda6_"]);
                 }
             }
             input_file.close();
