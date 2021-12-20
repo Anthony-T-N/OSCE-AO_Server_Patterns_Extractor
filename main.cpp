@@ -212,7 +212,7 @@ class Common_Class
             url_name.erase(0, url_name.find_last_of("/") + 1);
             return url_name;
         }
-        static void downloading_progress_bar(float &progress, int &bar_width, double &progress_bar_value)
+        static void downloading_progress_bar(int &bar_width, int &progress_bar_value)
         {
             std::cout << "\033[1;97m" << "[" << "\033[0m";
             int pos = bar_width * progress;
@@ -232,9 +232,13 @@ class Common_Class
                 }
             }
             // Take component values from component map to replace value at v_.
+            std::cout << "Progress bar value: " << progress_bar_value << "\n";
             std::cout << "\033[1;97m" << "] " << "\033[0m" << int(progress * 100.0) << " %\n";
             // [-] TODO: Determine total files to download beforehand. 100 / Total number of files = progress.
             progress += (100 / (progress_bar_value - 1)) / 100;
+            std::cout << "PROGRESS: " << progress;
+            // Possible float cast issue here to fix.
+
             //std::cout << progress << "\n";
             //progress += 0.07142857;
             std::cout << "\n";
@@ -258,7 +262,8 @@ class Common_Class
             strcpy(full_download_path_char, full_download_path.c_str());
             Common_Class::download_file(extracted_url_char, full_download_path_char);
 
-            Common_Class::downloading_progress_bar(progress, bar_width, progress_bar_value);
+            // Is progress parameter really necessary ?
+            Common_Class::downloading_progress_bar(bar_width, progress_bar_value);
         }
 
         // TODO: Consolidate all common elements of all classes into a static method.
@@ -429,7 +434,7 @@ class TMFWPTN_Class
                 else if (input_file_line.find("tmfwptn") != std::string::npos || tmfwptn_switch == true)
                 {
                     tmfwptn_switch = true;
-                    Common_Class::download_file_allocation(input_file_line, generic_download_path);
+                    Common_Class::download_file_allocation(input_file_line, generic_download_path, component_map["tmfwptn"]);
                 }
             }
             input_file.close();
@@ -451,7 +456,7 @@ class TRENDXLM_Class
                 // Go through all lines in the "server.ini" file until a line contains "tscptn" or "tsc".
                 if (input_file_line.find("trendxlm_") != std::string::npos)
                 {
-                    Common_Class::download_file_allocation(input_file_line, generic_download_path);
+                    Common_Class::download_file_allocation(input_file_line, generic_download_path, component_map["trendxlm_"]);
                 }
             }
             input_file.close();
