@@ -16,9 +16,7 @@ const std::string first_url_section = "http://osce14-p.activeupdate.trendmicro.c
 const std::string generic_download_path = "\\pattern\\";
 float progress = 0.0;
 int bar_width = 100;
-std::map<std::string, int> component_map;
-// Bad variable name.
-double v_ = 0;
+std::map<std::string, float> component_map;
 
 class Common_Class
 {       
@@ -116,13 +114,11 @@ class Common_Class
                 if (input_file_line.find("v_") != std::string::npos && input_file_line.find("P.4") != std::string::npos || input_file_line.find("vsapi") != std::string::npos && input_file_line.find("P.4") != std::string::npos)
                 {
                     component_map["vsapi"]++;
-                    v_ += 1;
                 }
                 // Go through all lines in the "server.ini" file until a line contains "icrc".
                 if (input_file_line.find("icrc") != std::string::npos)
                 {
                     component_map["icrc"]++;
-                    v_ += 1;
                 }
                 if (input_file_line.find("tsc") != std::string::npos || input_file_line.find("tscptn") != std::string::npos)
                 {
@@ -212,7 +208,7 @@ class Common_Class
             url_name.erase(0, url_name.find_last_of("/") + 1);
             return url_name;
         }
-        static void downloading_progress_bar(int &bar_width, int &progress_bar_value)
+        static void downloading_progress_bar(int &bar_width, float &progress_bar_value)
         {
             std::cout << "\033[1;97m" << "[" << "\033[0m";
             int pos = bar_width * progress;
@@ -231,19 +227,12 @@ class Common_Class
                     std::cout << " ";
                 }
             }
-            // Take component values from component map to replace value at v_.
-            std::cout << "Progress bar value: " << progress_bar_value << "\n";
             std::cout << "\033[1;97m" << "] " << "\033[0m" << int(progress * 100.0) << " %\n";
             // [-] TODO: Determine total files to download beforehand. 100 / Total number of files = progress.
             progress += (100 / (progress_bar_value - 1)) / 100;
-            std::cout << "PROGRESS: " << progress;
-            // Possible float cast issue here to fix.
-
-            //std::cout << progress << "\n";
-            //progress += 0.07142857;
             std::cout << "\n";
         }
-        static void download_file_allocation(std::string &input_file_line, std::string download_path, int &progress_bar_value)
+        static void download_file_allocation(std::string &input_file_line, std::string download_path, float &progress_bar_value)
         {
             std::string extracted_url = Common_Class::url_builder(input_file_line);
             std::string full_download_path = current_root_folder + download_path + Common_Class::file_download_name(extracted_url);
