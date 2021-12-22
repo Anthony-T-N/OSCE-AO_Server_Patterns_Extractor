@@ -86,6 +86,7 @@ class Common_Class
             bool commenting_enabled = false;
             bool server_section_found = false;
             bool tmfwptn_switch = false;
+            bool engine_switch = false;
 
             while (std::getline(input_file, input_file_line))
             {
@@ -150,8 +151,15 @@ class Common_Class
                 {
                     component_map["trendxlm_"]++;
                 }
-                // Potential solution to record total number of lines for each components:
-                // When commenting out server section, go through the rest of the "server.ini" file and count lines for each component. Count totals stored in dictionary to be later used for displaying the progress bar.
+                if (input_file_line == "")
+                {
+                    engine_switch = false;
+                }
+                else if (input_file_line.find("[ENGINE]") != std::string::npos || engine_switch == true)
+                {
+                    engine_switch = true;
+                    component_map["[ENGINE]"]++;
+                }
             }
             std::cout << "[DEBUG] Component Count Summary" << "\n";
             for (auto const& [key, val] : component_map)
@@ -452,6 +460,7 @@ class TRENDXLM_Class
         }
 };
 
+//[TODO] Class missing progress bar.
 class ENGINE_Class
 {
     public:
@@ -654,8 +663,7 @@ int main()
     }
     std::cout << "[!] END" << "\n";
     std::cout << "[!] Exiting..." << "\n\n";
-    // Don't use sys.
-    system("pause");
+    std::cin.get();
     return 0;
 }
 
