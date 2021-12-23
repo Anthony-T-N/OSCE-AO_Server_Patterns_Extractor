@@ -259,7 +259,6 @@ class Common_Class
             strcpy(full_download_path_char, full_download_path.c_str());
             Common_Class::download_file(extracted_url_char, full_download_path_char);
 
-            // Is progress parameter really necessary ?
             Common_Class::downloading_progress_bar(bar_width, progress_bar_value);
         }
 
@@ -408,7 +407,7 @@ class SSPDA6_Class
 };
 
 // UNIQUE CLASS
-// pattern/rr/rr_1.10727.00.zip
+// [TODO] pattern/rr/rr_1.10727.00.zip
 class TMFWPTN_Class
 {
     public:
@@ -431,7 +430,15 @@ class TMFWPTN_Class
                 else if (input_file_line.find("tmfwptn") != std::string::npos || tmfwptn_switch == true)
                 {
                     tmfwptn_switch = true;
-                    Common_Class::download_file_allocation(input_file_line, generic_download_path, component_map["tmfwptn"]);
+                    if (input_file_line.find("rr") != std::string::npos)
+                    {
+                        std::filesystem::create_directories(current_root_folder + "/pattern/" + "rr\\");
+                        Common_Class::download_file_allocation(input_file_line, (generic_download_path + "rr\\"), component_map["tmfwptn"]);
+                    }
+                    else
+                    {
+                        Common_Class::download_file_allocation(input_file_line, generic_download_path, component_map["tmfwptn"]);
+                    }
                 }
             }
             input_file.close();
