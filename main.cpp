@@ -407,7 +407,6 @@ class SSPDA6_Class
 };
 
 // UNIQUE CLASS
-// [TODO] pattern/rr/rr_1.10727.00.zip
 class TMFWPTN_Class
 {
     public:
@@ -467,7 +466,7 @@ class TRENDXLM_Class
         }
 };
 
-//[TODO] Class missing progress bar.
+// Class contains tailored download_file_allocation method.
 class ENGINE_Class
 {
     public:
@@ -559,6 +558,7 @@ class ENGINE_Class
                     strcpy(extracted_url_char, extracted_url.c_str());
                     strcpy(full_download_path_char, full_download_path.c_str());
                     Common_Class::download_file(extracted_url_char, full_download_path_char);
+                    Common_Class::downloading_progress_bar(bar_width, component_map["[ENGINE]"]);
                     SSAPI_switch = false;
                 }
             }
