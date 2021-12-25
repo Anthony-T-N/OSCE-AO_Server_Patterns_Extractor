@@ -566,6 +566,30 @@ class ENGINE_Class
         }
 };
 
+class PLMComponentList_Class
+{
+    public:
+        void PLMComponentList_pattern_identification()
+        {
+            std::filesystem::create_directories(current_root_folder + "/pattern/" + "enu\\");
+            float num_test = 1.0;
+
+            std::ifstream input_file;
+            Common_Class::open_ini();
+            input_file.open(current_root_folder + "/server.ini");
+
+            std::string input_file_line;
+            while (std::getline(input_file, input_file_line))
+            {
+                if (input_file_line.find("PLM25") != std::string::npos)
+                {
+                    Common_Class::download_file_allocation(input_file_line, generic_download_path, num_test);
+                }
+            }
+            input_file.close();
+        }
+};
+
 int main()
 {
     std::cout << "=======================================" << "\n";
@@ -666,6 +690,7 @@ int main()
         {
             break;
         }
+        // Reset progress bar.
         progress = 0.0;
     }
     std::cout << "[!] END" << "\n";
