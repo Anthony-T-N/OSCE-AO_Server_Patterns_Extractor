@@ -571,7 +571,10 @@ class PLMComponentList_Class
     public:
         void PLMComponentList_pattern_identification()
         {
-            std::filesystem::create_directories(current_root_folder + "/pattern/" + "enu\\");
+            // Path=product/osce14/enu/PLM25_OSCE_AOS_COMP_LIST.zip,166427
+            std::filesystem::create_directories(current_root_folder + "/pattern/" + "product/osce14/enu\\");
+            
+            // TEMP Float variable.
             float num_test = 1.0;
 
             std::ifstream input_file;
@@ -581,9 +584,9 @@ class PLMComponentList_Class
             std::string input_file_line;
             while (std::getline(input_file, input_file_line))
             {
-                if (input_file_line.find("PLM25") != std::string::npos)
+                if (input_file_line.find("PLM25") != std::string::npos && input_file_line.find("zip") != std::string::npos)
                 {
-                    Common_Class::download_file_allocation(input_file_line, generic_download_path, num_test);
+                    Common_Class::download_file_allocation(input_file_line, (generic_download_path + "product/osce14/enu\\"), num_test);
                 }
             }
             input_file.close();
@@ -618,7 +621,7 @@ int main()
     };
     while (true)
     {
-        // [-] TODO: Reset global variables (Example: Progress bar).
+        // [+] TODO: Reset global variables (Example: Progress bar).
         // [+] TODO: Other patterns cannot be downloaded unless ICRC patterns are downloaded first. Error unknown.
         // -> Solution: ICRC class/function creates "pattern" folder. Other class/functions do not.
         std::cout << "Select an option:" << "\n";
@@ -634,7 +637,7 @@ int main()
         std::cout << "\n";
         if (user_input == "0")
         {
-            // Temp objects -- Check
+            // Temp objects -- Check: Object not created here. Simply accessing methods from class.
             ICRC_Class().icrc_pattern_identification();
             std::cout << "[+] Completed downloading ICRC pattern files" << "\n\n";
         }
@@ -685,6 +688,11 @@ int main()
             ENGINE_Class engine_obj;
             engine_obj.engine_pattern_identification();
             std::cout << "[+] Completed downloading engine pattern files" << "\n\n";
+        }
+        else if (user_input == "9")
+        {
+            PLMComponentList_Class().PLMComponentList_pattern_identification();
+            std::cout << "[+] Completed downloading PLMComponentList pattern files" << "\n\n";
         }
         else if (user_input == "exit")
         {
