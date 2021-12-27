@@ -584,8 +584,9 @@ class PLMComponentList_Class
             std::string input_file_line;
             while (std::getline(input_file, input_file_line))
             {
-                if (input_file_line.find("PLM25") != std::string::npos && input_file_line.find("zip") != std::string::npos)
+                if (input_file_line.find("PLM25") != std::string::npos && input_file_line.find("product/osce14") != std::string::npos)
                 {
+                    std::cout << input_file_line << "\n";
                     Common_Class::download_file_allocation(input_file_line, (generic_download_path + "product/osce14/enu\\"), num_test);
                 }
             }
@@ -617,7 +618,8 @@ int main()
         "Download SSPDA6 (Unknown Pattern(s)) files",
         "Download TMFWPTN (Unknown Pattern(s)) files",
         "Download TRENDXLM (Unknown Pattern(s)) files",
-        "Download ENGINE (Unknown Pattern(s)) files"
+        "Download ENGINE (Unknown Pattern(s)) files",
+        "Download PLMComponentList (Unknown Pattern(s)) files"
     };
     while (true)
     {
@@ -691,6 +693,7 @@ int main()
         }
         else if (user_input == "9")
         {
+            // Temp objects -- Check: Object not created here. Simply accessing methods from class.
             PLMComponentList_Class().PLMComponentList_pattern_identification();
             std::cout << "[+] Completed downloading PLMComponentList pattern files" << "\n\n";
         }
