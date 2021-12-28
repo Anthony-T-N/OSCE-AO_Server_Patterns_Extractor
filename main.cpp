@@ -575,7 +575,7 @@ class PLMComponentList_Class
             std::filesystem::create_directories(current_root_folder + "/pattern/" + "product/osce14/enu\\");
             
             // TEMP Float variable.
-            float num_test = 1.0;
+            float num_test = 25.0;
 
             std::ifstream input_file;
             Common_Class::open_ini();
@@ -586,6 +586,16 @@ class PLMComponentList_Class
             {
                 if (input_file_line.find("PLM25") != std::string::npos && input_file_line.find("product/osce14") != std::string::npos)
                 {
+                    // New function here:
+                    // Path=product/osce14/deu/AddonSvcTMSM.zip,626808853
+                    // product/osce14/xxxx/AddonSvcTMSM.zip
+                    // Create /xxxx/ directory.
+
+                    // Directory check here.
+                    if (std::filesystem::is_directory(current_root_folder + "/pattern/" + "product/osce14\\" + XXXX) == false)
+                    {
+                        
+                    }
                     std::cout << input_file_line << "\n";
                     Common_Class::download_file_allocation(input_file_line, (generic_download_path + "product/osce14/enu\\"), num_test);
                 }
