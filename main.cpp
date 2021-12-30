@@ -584,8 +584,10 @@ class PLMComponentList_Class
             std::string input_file_line;
             while (std::getline(input_file, input_file_line))
             {
-                if (input_file_line.find("PLM25") != std::string::npos && input_file_line.find("product/osce14") != std::string::npos)
+                if (input_file_line.find(".zip") != std::string::npos && input_file_line.find("product/osce14") != std::string::npos)
                 {
+                    // http://osce14-p.activeupdate.trendmicro.com/activeupdate/product/osce14/enu/AddonSvcTMSM.zip - Massive file.
+
                     // New function here:
                     // Path=product/osce14/deu/AddonSvcTMSM.zip,626808853
                     // product/osce14/xxxx/AddonSvcTMSM.zip
@@ -595,16 +597,16 @@ class PLMComponentList_Class
                     temp_string.erase(temp_string.find_last_of("/"));
                     temp_string.erase(0, temp_string.find_last_of("/") + 1);
                     std::cout << temp_string << "\n";
-                    std::cout << current_root_folder + "/pattern/" + "product/osce14/" + temp_string + "\\" << "\n";
-                    std::cin.get();
+                    std::cout << current_root_folder + "\\pattern\\" + "product\\osce14\\" + temp_string + "\\" << "\n";
+                    //std::cin.get();
 
                     // Directory check here.
-                    if (std::filesystem::is_directory(current_root_folder + "/pattern/product/osce14\\" + temp_string) == false)
+                    if (std::filesystem::is_directory(current_root_folder + "\\pattern\\product\\osce14\\" + temp_string) == false)
                     {
-                        std::filesystem::create_directories(current_root_folder + "/pattern/" + "product/osce14/" + temp_string + "\\");
+                        std::filesystem::create_directories(current_root_folder + "\\pattern\\" + "product\\osce14\\" + temp_string + "\\");
                     }
                     std::cout << input_file_line << "\n";
-                    Common_Class::download_file_allocation(input_file_line, (generic_download_path + "product/osce14/enu\\"), num_test);
+                    Common_Class::download_file_allocation(input_file_line, (generic_download_path + "product\\osce14\\" + temp_string + "\\"), num_test);
                 }
             }
             input_file.close();
