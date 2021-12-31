@@ -570,10 +570,7 @@ class PLMComponentList_Class
 {
     public:
         void PLMComponentList_pattern_identification()
-        {
-            // Path=product/osce14/enu/PLM25_OSCE_AOS_COMP_LIST.zip,166427
-            std::filesystem::create_directories(current_root_folder + "/pattern/" + "product/osce14/enu\\");
-            
+        {            
             // TEMP Float variable.
             float num_test = 25.0;
 
@@ -593,20 +590,21 @@ class PLMComponentList_Class
                     // product/osce14/xxxx/AddonSvcTMSM.zip
                     // Create /xxxx/ directory.
 
-                    std::string temp_string = input_file_line;
-                    temp_string.erase(temp_string.find_last_of("/"));
-                    temp_string.erase(0, temp_string.find_last_of("/") + 1);
-                    std::cout << temp_string << "\n";
-                    std::cout << current_root_folder + "\\pattern\\" + "product\\osce14\\" + temp_string + "\\" << "\n";
+                    std::string country_code = input_file_line;
+                    country_code.erase(country_code.find_last_of("/"));
+                    country_code.erase(0, country_code.find_last_of("/") + 1);
+                    std::cout << country_code << "\n";
+                    std::cout << current_root_folder + "\\pattern\\" + "product\\osce14\\" + country_code + "\\" << "\n";
                     //std::cin.get();
 
                     // Directory check here.
-                    if (std::filesystem::is_directory(current_root_folder + "\\pattern\\product\\osce14\\" + temp_string) == false)
+                    if (std::filesystem::is_directory(current_root_folder + "\\pattern\\product\\osce14\\" + country_code) == false)
                     {
-                        std::filesystem::create_directories(current_root_folder + "\\pattern\\" + "product\\osce14\\" + temp_string + "\\");
+                        std::filesystem::create_directories(current_root_folder + "\\pattern\\" + "product\\osce14\\" + country_code + "\\");
                     }
+                    // 2021-12-31\pattern\product\osce14\enu\AddonSvcTMSM.zip -> Large File.
                     std::cout << input_file_line << "\n";
-                    Common_Class::download_file_allocation(input_file_line, (generic_download_path + "product\\osce14\\" + temp_string + "\\"), num_test);
+                    Common_Class::download_file_allocation(input_file_line, (generic_download_path + "product\\osce14\\" + country_code + "\\"), num_test);
                 }
             }
             input_file.close();
