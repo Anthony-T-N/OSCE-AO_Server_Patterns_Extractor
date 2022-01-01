@@ -160,6 +160,10 @@ class Common_Class
                     engine_switch = true;
                     component_map["[ENGINE]"]++;
                 }
+                if (input_file_line.find(".zip") != std::string::npos && input_file_line.find("product/osce14") != std::string::npos)
+                {
+                    component_map["PLMComponentList"]++;
+                }
             }
             std::cout << "[DEBUG] Component Count Summary" << "\n";
             for (auto const& [key, val] : component_map)
@@ -570,10 +574,7 @@ class PLMComponentList_Class
 {
     public:
         void PLMComponentList_pattern_identification()
-        {            
-            // TEMP Float variable.
-            float num_test = 25.0;
-
+        {
             std::ifstream input_file;
             Common_Class::open_ini();
             input_file.open(current_root_folder + "/server.ini");
@@ -604,7 +605,7 @@ class PLMComponentList_Class
                     }
                     // 2021-12-31\pattern\product\osce14\enu\AddonSvcTMSM.zip -> Large File.
                     std::cout << input_file_line << "\n";
-                    Common_Class::download_file_allocation(input_file_line, (generic_download_path + "product\\osce14\\" + country_code + "\\"), num_test);
+                    Common_Class::download_file_allocation(input_file_line, (generic_download_path + "product\\osce14\\" + country_code + "\\"), component_map["PLMComponentList"]);
                 }
             }
             input_file.close();
