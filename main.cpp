@@ -637,7 +637,8 @@ int main()
         "Download TMFWPTN (Unknown Pattern(s)) files",
         "Download TRENDXLM (Unknown Pattern(s)) files",
         "Download ENGINE (Unknown Pattern(s)) files",
-        "Download PLMComponentList (Unknown Pattern(s)) files"
+        "Download PLMComponentList (Unknown Pattern(s)) files",
+        "Download ALL pattern files"
     };
     while (true)
     {
@@ -715,6 +716,20 @@ int main()
             PLMComponentList_Class().PLMComponentList_pattern_identification();
             std::cout << "[+] Completed downloading PLMComponentList pattern files" << "\n\n";
         }
+        else if (user_input == "10")
+        {
+            ICRC_Class().icrc_pattern_identification();
+            VSAPI_Class().vsapi_pattern_identification();
+            TSCPTN_Class().tscptn_pattern_identification();
+            TMWHITE_Class().tmwhite_pattern_identification();
+            SSAPTN_Class().ssaptn_pattern_identification();
+            SSPDA6_Class().sspda6_pattern_identification();
+            TMFWPTN_Class().tmfwptn_pattern_identification();
+            TRENDXLM_Class().trendxlm_pattern_identification();
+            ENGINE_Class().engine_pattern_identification();
+            PLMComponentList_Class().PLMComponentList_pattern_identification();
+            std::cout << "[+] Completed downloading ALL pattern files" << "\n\n";
+        }
         else if (user_input == "exit")
         {
             break;
@@ -772,4 +787,34 @@ http://files.trendmicro.com/products/scanmail/SMEX-12.0%20SP1-GM-1464-AG.pdf
 
 - DCE: Damage Cleanup Engine
 - DCT: Damage Cleanup Template
+
+Note: The following below is found in the server.ini file. Investigation suggest these lines are linked to the PLMComponentList.
+
+[All_Product]
+MaxProductID=745
+Product.177=Mobile Security Add-On Service,5.5,9.0
+Product.462=OSCE Add-On Service - Trend Micro Security for Macintosh,1.0,3.9
+Product.490=OSCE Add-On Service - VDI, 1.0, 3.0
+Product.523=OSCE Add-On Service - DLP, 1.0, 2.0
+Product.539=OSCE Add-On Service - ToolBox,1.0,2.0
+Product.540=OSCE Add-On Service - ToolBox Client,1.0,2.0
+Product.602=OSCE Add-On Service - TMEE Deployment Tool, 1.0, 7.0
+Product.603=OSCE Add-On Service - TMEE Deployment Tool Client, 1.0, 7.0
+Product.716=OSCE Add On Service Vulnerability Protection Server Windows x86, 1.0, 3.0
+Product.717=OSCE Add On Service Vulnerability Protection Client Windows x86, 1.0, 3.0
+Product.541=Endpoint Sensor Client 32bit,1.0,2.0
+Product.542=Endpoint Sensor Client 64bit,1.0,2.0
+Product.543=OSCE Add-On Service - Endpoint Sensor,1.0,2.0
+Product.745=PLM25_OSCE_Addon_Service_CompList,1.0,3.0
+
+//https://docs.trendmicro.com/all/ent/tmsm/v1.5/en-us/tmsm_1.5_olhsrv/tmsmag/tmsmag-serverclient/server_and_client_upgrade.htm
+Line "Product.745=PLM25_OSCE_Addon_Service_CompList,1.0,3.0" is related to the following below:
+Note number 745 in line above correlates with 745 in the section below.
+;EN edition
+[Info_745_10000_1_1]
+Version=2.5
+Build=1045
+Path=product/osce14/enu/PLM25_OSCE_AOS_COMP_LIST.zip,166427
+Min=1.0
+Max=3.0
 */
