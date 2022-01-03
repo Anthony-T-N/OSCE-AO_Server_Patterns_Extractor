@@ -165,14 +165,16 @@ class Common_Class
                     component_map["PLMComponentList"]++;
                 }
             }
+            std::cout << "\n";
             std::cout << "[DEBUG] Component Count Summary" << "\n";
             for (auto const& [key, val] : component_map)
             {
                 std::cout << key        // string (key)
                     << ':'
                     << val        // string's value
-                    << std::endl;
+                    << "\n";
             }
+            std::cout << "\n";
             input_file.close();
             output_file.close();
             if (server_section_found == false)
@@ -182,8 +184,6 @@ class Common_Class
             }
             remove("temp.ini");
             std::cout << "[+] Deleted temp.ini successfully;" << "\n\n";
-            std::cout << "[DEBUG] Section" << "\n";
-
         }
         void root_folder_creation()
         {
@@ -448,6 +448,8 @@ class TMFWPTN_Class
         }
 };
 
+// [-] TODO: Does not download P.48040252=pattern/tmtbd64_en_257364.zip,257364,196355
+//                             P.48040251=pattern/tmtbd_en_257300.zip,257300,200743
 class TRENDXLM_Class
 {
     public:
