@@ -240,7 +240,7 @@ class Common_Class
                 }
             }
             std::cout << "\033[1;97m" << "] " << "\033[0m" << int(progress * 100.0) << " %\n";
-            // [-] TODO: Determine total files to download beforehand. 100 / Total number of files = progress.
+            // [+] TODO: Determine total files to download beforehand. 100 / Total number of files = progress.
             progress += (100 / (progress_bar_value - 1)) / 100;
             std::cout << "\n";
         }
@@ -455,6 +455,8 @@ class TRENDXLM_Class
     public:
         void trendxlm_pattern_identification()
         {
+            bool trendxlm_switch = false;
+
             std::ifstream input_file;
             Common_Class::open_ini();
             input_file.open(current_root_folder + "/server.ini");
@@ -462,8 +464,17 @@ class TRENDXLM_Class
             std::string input_file_line;
             while (std::getline(input_file, input_file_line))
             {
+                if (input_file_line == "")
+                {
+                    trendxlm_switch = false;
+                }
+                else if (input_file_line.find("trendxlm") != std::string::npos)
+                {
+                    trendxlm_switch = true;
+                    continue;
+                }
                 // Go through all lines in the "server.ini" file until a line contains "tscptn" or "tsc".
-                if (input_file_line.find("trendxlm_") != std::string::npos)
+                if (input_file_line.find("pattern") != std::string::npos && trendxlm_switch == true)
                 {
                     Common_Class::download_file_allocation(input_file_line, generic_download_path, component_map["trendxlm_"]);
                 }
