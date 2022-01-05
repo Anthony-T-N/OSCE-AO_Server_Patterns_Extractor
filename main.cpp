@@ -300,6 +300,7 @@ class ICRC_Class
                 }
             }
             input_file.close();
+            progress = 0.0;
         }
 };
 
@@ -322,6 +323,7 @@ class VSAPI_Class
                 }
             }
             input_file.close();
+            progress = 0.0;
         }
 };
 
@@ -344,6 +346,7 @@ class TSCPTN_Class
                 }
             }
             input_file.close();
+            progress = 0.0;
         }
 };
 
@@ -365,6 +368,7 @@ class TMWHITE_Class
                 }
             }
             input_file.close();
+            progress = 0.0;
         }
 };
 
@@ -386,6 +390,7 @@ class SSAPTN_Class
                 }
             }
             input_file.close();
+            progress = 0.0;
         }
 };
 
@@ -407,6 +412,7 @@ class SSPDA6_Class
                 }
             }
             input_file.close();
+            progress = 0.0;
         }
 };
 
@@ -445,6 +451,7 @@ class TMFWPTN_Class
                 }
             }
             input_file.close();
+            progress = 0.0;
         }
 };
 
@@ -480,6 +487,7 @@ class TRENDXLM_Class
                 }
             }
             input_file.close();
+            progress = 0.0;
         }
 };
 
@@ -580,9 +588,21 @@ class ENGINE_Class
                 }
             }
             input_file.close();
+            progress = 0.0;
         }
 };
 
+// [-] TODO: Missing following files:
+/*
+[Info_602_10000_1_1]
+Version=6.0
+Build=3011
+Path=product/enu/AddonSvcTmeeDepTool.zip,217053835
+PA_Version=6.0.3011
+Update_Path=product/enu/TmeeDepPatchAgent.zip,209602
+Min=1.0
+Max=7.0
+*/
 class PLMComponentList_Class
 {
     public:
@@ -617,11 +637,17 @@ class PLMComponentList_Class
                         std::filesystem::create_directories(current_root_folder + "\\pattern\\" + "product\\osce14\\" + country_code + "\\");
                     }
                     // 2021-12-31\pattern\product\osce14\enu\AddonSvcTMSM.zip -> Large File.
+                    if (input_file_line.find("AddonSvcTMSM.zip") != std::string::npos)
+                    {
+                        continue;
+                    }
+                    // [-] TODO: Check size of file before downloading.
                     std::cout << input_file_line << "\n";
                     Common_Class::download_file_allocation(input_file_line, (generic_download_path + "product\\osce14\\" + country_code + "\\"), component_map["PLMComponentList"]);
                 }
             }
             input_file.close();
+            progress = 0.0;
         }
 };
 
@@ -731,6 +757,7 @@ int main()
         }
         else if (user_input == "10")
         {
+            // [-] TODO: Reset progress bar after every executed method.
             ICRC_Class().icrc_pattern_identification();
             VSAPI_Class().vsapi_pattern_identification();
             TSCPTN_Class().tscptn_pattern_identification();
