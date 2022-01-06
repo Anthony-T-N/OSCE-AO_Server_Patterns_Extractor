@@ -21,6 +21,41 @@ std::map<std::string, float> component_map;
 class Common_Class
 {       
     public:
+        void temp_method()
+        {
+            std::vector<std::string> temp_vector;
+            bool PLMComponentList_switch = false;
+            bool other_switch = false;
+
+            // 1) Open server.ini file;
+            std::ifstream input_file;
+            Common_Class::open_ini();
+            input_file.open(current_root_folder + "/server.ini");
+
+            // 2) Locate PLMComponentList;
+            std::string input_file_line;
+            while (std::getline(input_file, input_file_line))
+            {
+                if (input_file_line == "" && other_switch == false)
+                {
+                    PLMComponentList_switch = false;
+                }
+                else if (input_file_line.find("PLMComponentList") != std::string::npos)
+                {
+                    PLMComponentList_switch = true;
+                    other_switch = true;
+                    continue;
+                }
+                if (input_file_line.find("product") != std::string::npos && PLMComponentList_switch == true)
+                {
+                    temp_vector.push_back(input_file_line);
+                }
+            }
+            for (int i = 0; i <= temp_vector.size() - 1; i++)
+            {
+                std::cout << "[" << i << "]" << " " << temp_vector[i] << "\n";
+            }
+        }
         static size_t write_data(void* ptr, size_t size, size_t nmemb, void* stream)
         {
             size_t written = fwrite(ptr, size, nmemb, (FILE*)stream);
@@ -664,6 +699,10 @@ int main()
     baseline_obj.extract_serverini_file();
     baseline_obj.root_folder_creation();
     baseline_obj.comment_server_section();
+
+    /* REMOVE AFTER TESTING TEMP_METHOD;
+    */
+    Common_Class().temp_method();
 
     std::vector<std::string> options_vector = 
     {
