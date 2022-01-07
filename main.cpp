@@ -48,6 +48,7 @@ class Common_Class
                 }
                 if (input_file_line.find("product") != std::string::npos && PLMComponentList_switch == true)
                 {
+                    input_file_line.erase(0, input_file_line.find_first_of("=") + 1);
                     temp_vector.push_back(input_file_line);
                 }
             }
@@ -650,6 +651,7 @@ class PLMComponentList_Class
             std::string input_file_line;
             while (std::getline(input_file, input_file_line))
             {
+                // PLMComponentList Detection First.
                 if (input_file_line.find(".zip") != std::string::npos && input_file_line.find("product/osce14") != std::string::npos)
                 {
                     // http://osce14-p.activeupdate.trendmicro.com/activeupdate/product/osce14/enu/AddonSvcTMSM.zip - Massive file.
@@ -678,7 +680,22 @@ class PLMComponentList_Class
                     }
                     // [-] TODO: Check size of file before downloading.
                     std::cout << input_file_line << "\n";
-                    Common_Class::download_file_allocation(input_file_line, (generic_download_path + "product\\osce14\\" + country_code + "\\"), component_map["PLMComponentList"]);
+                    if (input_file_line.find("osce14") != std::string::npos)
+                    {
+                        //std::cout << "Contains osce14" << "\n";
+                        //std::cout << input_file_line << "\n";
+                        std::cout << "\n";
+                        //Common_Class::download_file_allocation(input_file_line, (generic_download_path + "product\\osce14\\" + country_code + "\\"), component_map["PLMComponentList"]);
+                    }
+                    else
+                    {
+                        std::cout << "===Does not contain osce14===" << "\n";
+                        std::cout << input_file_line << "\n";
+                        std::cout << "\n";
+                        //Common_Class::download_file_allocation(input_file_line, (generic_download_path + "product\\" + country_code + "\\"), component_map["PLMComponentList"]);
+                    }
+                    
+                    
                 }
             }
             input_file.close();
