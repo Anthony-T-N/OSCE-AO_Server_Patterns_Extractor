@@ -196,7 +196,7 @@ class Common_Class
                     engine_switch = true;
                     component_map["[ENGINE]"]++;
                 }
-                if (input_file_line.find(".zip") != std::string::npos && input_file_line.find("product/osce14") != std::string::npos)
+                if (input_file_line.find(".zip") != std::string::npos && input_file_line.find("product/") != std::string::npos)
                 {
                     component_map["PLMComponentList"]++;
                 }
@@ -652,7 +652,7 @@ class PLMComponentList_Class
             while (std::getline(input_file, input_file_line))
             {
                 // PLMComponentList Detection First.
-                if (input_file_line.find(".zip") != std::string::npos && input_file_line.find("product/osce14") != std::string::npos)
+                if (input_file_line.find(".zip") != std::string::npos && input_file_line.find("product/") != std::string::npos)
                 {
                     // http://osce14-p.activeupdate.trendmicro.com/activeupdate/product/osce14/enu/AddonSvcTMSM.zip - Massive file.
 
@@ -673,6 +673,10 @@ class PLMComponentList_Class
                     {
                         std::filesystem::create_directories(current_root_folder + "\\pattern\\" + "product\\osce14\\" + country_code + "\\");
                     }
+                    if (std::filesystem::is_directory(current_root_folder + "\\pattern\\product\\" + country_code) == false)
+                    {
+                        std::filesystem::create_directories(current_root_folder + "\\pattern\\" + "product\\" + country_code + "\\");
+                    }
                     // 2021-12-31\pattern\product\osce14\enu\AddonSvcTMSM.zip -> Large File.
                     if (input_file_line.find("AddonSvcTMSM.zip") != std::string::npos)
                     {
@@ -685,17 +689,15 @@ class PLMComponentList_Class
                         //std::cout << "Contains osce14" << "\n";
                         //std::cout << input_file_line << "\n";
                         std::cout << "\n";
-                        //Common_Class::download_file_allocation(input_file_line, (generic_download_path + "product\\osce14\\" + country_code + "\\"), component_map["PLMComponentList"]);
+                        Common_Class::download_file_allocation(input_file_line, (generic_download_path + "product\\osce14\\" + country_code + "\\"), component_map["PLMComponentList"]);
                     }
                     else
                     {
-                        std::cout << "===Does not contain osce14===" << "\n";
-                        std::cout << input_file_line << "\n";
-                        std::cout << "\n";
-                        //Common_Class::download_file_allocation(input_file_line, (generic_download_path + "product\\" + country_code + "\\"), component_map["PLMComponentList"]);
+                        //std::cout << "===Does not contain osce14===" << "\n";
+                        //std::cout << input_file_line << "\n";
+                        //std::cout << "\n";
+                        Common_Class::download_file_allocation(input_file_line, (generic_download_path + "product\\" + country_code + "\\"), component_map["PLMComponentList"]);
                     }
-                    
-                    
                 }
             }
             input_file.close();
