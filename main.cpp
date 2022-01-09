@@ -46,7 +46,7 @@ class Common_Class
                     other_switch = true;
                     continue;
                 }
-                if (input_file_line.find("product") != std::string::npos && PLMComponentList_switch == true)
+                if ((input_file_line.find(".zip") != std::string::npos && input_file_line.find("product/") != std::string::npos) && PLMComponentList_switch == true)
                 {
                     input_file_line.erase(0, input_file_line.find_first_of("=") + 1);
                     temp_vector.push_back(input_file_line);
@@ -628,7 +628,7 @@ class ENGINE_Class
         }
 };
 
-// [-] TODO: Missing following files:
+// [+] TODO: Missing following files:
 /*
 [Info_602_10000_1_1]
 Version=6.0
@@ -664,18 +664,20 @@ class PLMComponentList_Class
                     std::string country_code = input_file_line;
                     country_code.erase(country_code.find_last_of("/"));
                     country_code.erase(0, country_code.find_last_of("/") + 1);
+                    /*
                     std::cout << country_code << "\n";
-                    std::cout << current_root_folder + "\\pattern\\" + "product\\osce14\\" + country_code + "\\" << "\n";
+                    std::cout << current_root_folder + "\\pattern\\product\\osce14\\" + country_code + "\\" << "\n";
                     //std::cin.get();
+                    */
 
                     // Directory check here.
                     if (std::filesystem::is_directory(current_root_folder + "\\pattern\\product\\osce14\\" + country_code) == false)
                     {
-                        std::filesystem::create_directories(current_root_folder + "\\pattern\\" + "product\\osce14\\" + country_code + "\\");
+                        std::filesystem::create_directories(current_root_folder + "\\pattern\\product\\osce14\\" + country_code + "\\");
                     }
                     if (std::filesystem::is_directory(current_root_folder + "\\pattern\\product\\" + country_code) == false)
                     {
-                        std::filesystem::create_directories(current_root_folder + "\\pattern\\" + "product\\" + country_code + "\\");
+                        std::filesystem::create_directories(current_root_folder + "\\pattern\\product\\" + country_code + "\\");
                     }
                     // 2021-12-31\pattern\product\osce14\enu\AddonSvcTMSM.zip -> Large File.
                     if (input_file_line.find("AddonSvcTMSM.zip") != std::string::npos)
@@ -688,15 +690,15 @@ class PLMComponentList_Class
                     {
                         //std::cout << "Contains osce14" << "\n";
                         //std::cout << input_file_line << "\n";
-                        std::cout << "\n";
-                        Common_Class::download_file_allocation(input_file_line, (generic_download_path + "product\\osce14\\" + country_code + "\\"), component_map["PLMComponentList"]);
+                        //std::cout << "\n";
+                        //Common_Class::download_file_allocation(input_file_line, (generic_download_path + "product\\osce14\\" + country_code + "\\"), component_map["PLMComponentList"]);
                     }
                     else
                     {
                         //std::cout << "===Does not contain osce14===" << "\n";
                         //std::cout << input_file_line << "\n";
                         //std::cout << "\n";
-                        Common_Class::download_file_allocation(input_file_line, (generic_download_path + "product\\" + country_code + "\\"), component_map["PLMComponentList"]);
+                        //Common_Class::download_file_allocation(input_file_line, (generic_download_path + "product\\" + country_code + "\\"), component_map["PLMComponentList"]);
                     }
                 }
             }
