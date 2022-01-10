@@ -17,6 +17,7 @@ const std::string generic_download_path = "\\pattern\\";
 float progress = 0.0;
 int bar_width = 100;
 std::map<std::string, float> component_map;
+std::map<std::string, int> file_integrity_count_map;
 
 class Common_Class
 {       
@@ -55,6 +56,24 @@ class Common_Class
             for (int i = 0; i <= temp_vector.size() - 1; i++)
             {
                 std::cout << "[" << i << "]" << " " << temp_vector[i] << "\n";
+            }
+        }
+        /*
+        Method to count all lines in the server.ini file that contain pattern/ , engine/ , product/ for integrity purposes.
+        */
+        void OSCE_AO_file_integrity_check(std::string input_file_line)
+        {
+            if (input_file_line.find("pattern/") != std::string::npos)
+            {
+                file_integrity_count_map["pattern/"]++;
+            }
+            else if (input_file_line.find("engine/") != std::string::npos)
+            {
+                file_integrity_count_map["engine/"]++;
+            }
+            else if (input_file_line.find("product/") != std::string::npos)
+            {
+                file_integrity_count_map["product/"]++;
             }
         }
         static size_t write_data(void* ptr, size_t size, size_t nmemb, void* stream)
@@ -679,13 +698,13 @@ class PLMComponentList_Class
                     {
                         std::filesystem::create_directories(current_root_folder + "\\pattern\\product\\" + country_code + "\\");
                     }
+                    std::cout << input_file_line << "\n";
                     // 2021-12-31\pattern\product\osce14\enu\AddonSvcTMSM.zip -> Large File.
                     if (input_file_line.find("AddonSvcTMSM.zip") != std::string::npos)
                     {
                         continue;
                     }
                     // [-] TODO: Check size of file before downloading.
-                    std::cout << input_file_line << "\n";
                     if (input_file_line.find("osce14") != std::string::npos)
                     {
                         //std::cout << "Contains osce14" << "\n";
