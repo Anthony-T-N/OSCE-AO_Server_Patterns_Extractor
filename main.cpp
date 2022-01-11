@@ -18,6 +18,7 @@ float progress = 0.0;
 int bar_width = 100;
 std::map<std::string, float> component_map;
 std::map<std::string, int> file_integrity_count_map;
+int total_file_count = 0;
 
 class Common_Class
 {       
@@ -75,6 +76,7 @@ class Common_Class
             {
                 file_integrity_count_map["product/"]++;
             }
+            total_file_count++;
         }
         static size_t write_data(void* ptr, size_t size, size_t nmemb, void* stream)
         {
@@ -145,6 +147,8 @@ class Common_Class
 
             while (std::getline(input_file, input_file_line))
             {
+                OSCE_AO_file_integrity_check(input_file_line);
+
                 if (input_file_line.find("[Server]") != std::string::npos)
                 {
                     std::cout << "[+] [Server] Section Found;" << "\n";
@@ -223,6 +227,15 @@ class Common_Class
             std::cout << "\n";
             std::cout << "[DEBUG] Component Count Summary" << "\n";
             for (auto const& [key, val] : component_map)
+            {
+                std::cout << key        // string (key)
+                    << ':'
+                    << val        // string's value
+                    << "\n";
+            }
+            std::cout << "\n";
+            std::cout << "[DEBUG] File Integrity Count Summary" << "\n";
+            for (auto const& [key, val] : file_integrity_count_map)
             {
                 std::cout << key        // string (key)
                     << ':'
@@ -740,9 +753,9 @@ int main()
     baseline_obj.root_folder_creation();
     baseline_obj.comment_server_section();
 
-    /* REMOVE AFTER TESTING TEMP_METHOD;
-    */
+    /* REMOVE AFTER TESTING TEMP_METHOD; */
     Common_Class().temp_method();
+    std::cout << "Total_File_Count: " << total_file_count << " " << total_file_count*2 << "\n";
 
     std::vector<std::string> options_vector = 
     {
@@ -855,6 +868,7 @@ int main()
         }
         // Reset progress bar.
         progress = 0.0;
+        total_file_count = 0;
     }
     std::cout << "[!] END" << "\n";
     std::cout << "[!] Exiting..." << "\n\n";
