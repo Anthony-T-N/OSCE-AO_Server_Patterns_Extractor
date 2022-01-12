@@ -712,9 +712,9 @@ class PLMComponentList_Class
                         std::filesystem::create_directories(current_root_folder + "\\pattern\\product\\" + country_code + "\\");
                     }
                     std::cout << input_file_line << "\n";
-                    // 2021-12-31\pattern\product\osce14\enu\AddonSvcTMSM.zip -> Large File.
                     if (input_file_line.find("AddonSvcTMSM.zip") != std::string::npos)
                     {
+                        // 2021-12-31\pattern\product\osce14\enu\AddonSvcTMSM.zip -> Large File -> Skip
                         continue;
                     }
                     // [-] TODO: Check size of file before downloading.
@@ -762,8 +762,8 @@ int main()
         "Download ICRC (Smart Scan Pattern(s)) files",
         "Download VSAPI (Virus Pattern(s)) files",
         "Download TSCPTN (Unknown Pattern(s)) files",
-        "Download TMWHITE (Unknown Pattern(s)) files",
-        "Download SSAPTN (Unknown Pattern(s)) files",
+        "Download TMWHITE (IntelliTrap Pattern(s)) files",
+        "Download SSAPTN (Spyware Active - Monitoring Pattern(s)) files",
         "Download SSPDA6 (Unknown Pattern(s)) files",
         "Download TMFWPTN (Unknown Pattern(s)) files",
         "Download TRENDXLM (Unknown Pattern(s)) files",
@@ -867,6 +867,7 @@ int main()
             break;
         }
         // Reset progress bar.
+        // Is this needed when other methods from other classes already reset the progress variable.
         progress = 0.0;
         total_file_count = 0;
     }
@@ -916,7 +917,8 @@ http://files.trendmicro.com/products/scanmail/SMEX-12.0%20SP1-GM-1464-AG.pdf
 - ssaptn & ssa_ : Spyware Active-monitoring Pattern
 - sspda6
 - icrc
-- tmfwptn
+- tmfwptn : Mutiple different patterns under tmfwptn
+- trendxlm
 
 - DCE: Damage Cleanup Engine
 - DCT: Damage Cleanup Template
