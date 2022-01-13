@@ -206,6 +206,7 @@ class Common_Class
                     tmfwptn_switch = true;
                     component_map["tmfwptn"]++;
                 }
+                // [-] TODO: Testing shows 128%. Fix progress value of "trendxlm_".
                 if (input_file_line.find("trendxlm_") != std::string::npos)
                 {
                     component_map["trendxlm_"]++;
@@ -484,7 +485,7 @@ class SSPDA6_Class
         }
 };
 
-// UNIQUE CLASS
+// UNIQUE CLASS - Downloads a diverse range of files.
 class TMFWPTN_Class
 {
     public:
@@ -523,7 +524,7 @@ class TMFWPTN_Class
         }
 };
 
-// [-] TODO: Does not download P.48040252=pattern/tmtbd64_en_257364.zip,257364,196355
+// [+] TODO: Does not download P.48040252=pattern/tmtbd64_en_257364.zip,257364,196355
 //                             P.48040251=pattern/tmtbd_en_257300.zip,257300,200743
 class TRENDXLM_Class
 {
@@ -546,7 +547,6 @@ class TRENDXLM_Class
                 else if (input_file_line.find("trendxlm") != std::string::npos)
                 {
                     trendxlm_switch = true;
-                    continue;
                 }
                 // Go through all lines in the "server.ini" file until a line contains "tscptn" or "tsc".
                 if (input_file_line.find("pattern") != std::string::npos && trendxlm_switch == true)
@@ -723,14 +723,14 @@ class PLMComponentList_Class
                         //std::cout << "Contains osce14" << "\n";
                         //std::cout << input_file_line << "\n";
                         //std::cout << "\n";
-                        //Common_Class::download_file_allocation(input_file_line, (generic_download_path + "product\\osce14\\" + country_code + "\\"), component_map["PLMComponentList"]);
+                        Common_Class::download_file_allocation(input_file_line, (generic_download_path + "product\\osce14\\" + country_code + "\\"), component_map["PLMComponentList"]);
                     }
                     else
                     {
                         //std::cout << "===Does not contain osce14===" << "\n";
                         //std::cout << input_file_line << "\n";
                         //std::cout << "\n";
-                        //Common_Class::download_file_allocation(input_file_line, (generic_download_path + "product\\" + country_code + "\\"), component_map["PLMComponentList"]);
+                        Common_Class::download_file_allocation(input_file_line, (generic_download_path + "product\\" + country_code + "\\"), component_map["PLMComponentList"]);
                     }
                 }
             }
