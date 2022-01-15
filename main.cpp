@@ -48,11 +48,18 @@ class Common_Class
                     other_switch = true;
                     continue;
                 }
+                if ((input_file_line.find(".zip") != std::string::npos && input_file_line.find("product/") != std::string::npos) && input_file_line.find("enu") != std::string::npos && PLMComponentList_switch == true)
+                {
+                    input_file_line.erase(0, input_file_line.find_first_of("=") + 1);
+                    temp_vector.push_back(input_file_line);
+                }
+                /*
                 if ((input_file_line.find(".zip") != std::string::npos && input_file_line.find("product/") != std::string::npos) && PLMComponentList_switch == true)
                 {
                     input_file_line.erase(0, input_file_line.find_first_of("=") + 1);
                     temp_vector.push_back(input_file_line);
                 }
+                */
             }
             for (int i = 0; i <= temp_vector.size() - 1; i++)
             {
@@ -61,6 +68,14 @@ class Common_Class
         }
         /*
         Method to count all lines in the server.ini file that contain pattern/ , engine/ , product/ for integrity purposes.
+
+        // Note: Server.ini has line repeats.
+        [16] product/enu/ESServerAgent.zip,202183
+        [17] product/enu/ESClientPlugin_win32.zip,47668860
+        [18] product/enu/ESClientAgent.zip,307337 <<<=============================
+        [19] product/enu/ESClientPlugin_x64.zip,60460931
+        [20] product/enu/ESClientAgent.zip,307337 <<<=============================
+
         */
         void OSCE_AO_file_integrity_check(std::string input_file_line)
         {
@@ -78,6 +93,10 @@ class Common_Class
             {
                 file_integrity_count_map["product/"]++;
                 total_file_count++;
+            }
+            if (input_file_line.find("AddonSvcTMSM.zip") != std::string::npos)
+            {
+                file_integrity_count_map["AddonSvcTMSM.zip"]++;
             }
         }
         static size_t write_data(void* ptr, size_t size, size_t nmemb, void* stream)
