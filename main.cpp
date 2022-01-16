@@ -48,11 +48,13 @@ class Common_Class
                     other_switch = true;
                     continue;
                 }
+                
                 if ((input_file_line.find(".zip") != std::string::npos && input_file_line.find("product/") != std::string::npos) && input_file_line.find("enu") != std::string::npos && PLMComponentList_switch == true)
                 {
                     input_file_line.erase(0, input_file_line.find_first_of("=") + 1);
                     temp_vector.push_back(input_file_line);
                 }
+                
                 /*
                 if ((input_file_line.find(".zip") != std::string::npos && input_file_line.find("product/") != std::string::npos) && PLMComponentList_switch == true)
                 {
@@ -61,24 +63,32 @@ class Common_Class
                 }
                 */
             }
-            for (int i = 0; i <= temp_vector.size() - 1; i++)
+            for (int i = 1; i <= temp_vector.size() - 1; i++)
+            {
+                std::cout << "[" << i << "]" << " " << temp_vector[i] << "\n";
+            }
+            // Note: Server.ini has line repeats.
+            /*
+                [16] product / enu / ESServerAgent.zip, 202183
+                [17] product / enu / ESClientPlugin_win32.zip, 47668860
+                [18] product / enu / ESClientAgent.zip, 307337 <<<=============================
+                [19] product / enu / ESClientPlugin_x64.zip, 60460931
+                [20] product / enu / ESClientAgent.zip, 307337 <<<=============================
+            */
+            sort(temp_vector.begin(), temp_vector.end());
+            temp_vector.erase(unique(temp_vector.begin(), temp_vector.end()), temp_vector.end());
+            for (int i = 1; i <= temp_vector.size() - 1; i++)
             {
                 std::cout << "[" << i << "]" << " " << temp_vector[i] << "\n";
             }
         }
         /*
         Method to count all lines in the server.ini file that contain pattern/ , engine/ , product/ for integrity purposes.
-
-        // Note: Server.ini has line repeats.
-        [16] product/enu/ESServerAgent.zip,202183
-        [17] product/enu/ESClientPlugin_win32.zip,47668860
-        [18] product/enu/ESClientAgent.zip,307337 <<<=============================
-        [19] product/enu/ESClientPlugin_x64.zip,60460931
-        [20] product/enu/ESClientAgent.zip,307337 <<<=============================
-
         */
         void OSCE_AO_file_integrity_check(std::string input_file_line)
         {
+            // True total count = ([All lines with pattern, engine, product] x 2) - [Duplicates] - [Files not downloaded] + server.ini file.
+
             if (input_file_line.find("pattern/") != std::string::npos)
             {
                 file_integrity_count_map["pattern/"]++;
@@ -238,8 +248,12 @@ class Common_Class
                 }
                 else if (input_file_line.find("[ENGINE]") != std::string::npos || engine_switch == true)
                 {
+                    // Line "[ENGINE]" is included as part of count.
+                    if (engine_switch == true)
+                    {
+                        component_map["[ENGINE]"]++;
+                    }
                     engine_switch = true;
-                    component_map["[ENGINE]"]++;
                 }
                 if (input_file_line.find(".zip") != std::string::npos && input_file_line.find("product/") != std::string::npos)
                 {
