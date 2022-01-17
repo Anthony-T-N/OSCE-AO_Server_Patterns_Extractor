@@ -49,14 +49,15 @@ class Common_Class
                     continue;
                 }
                 
-                if ((input_file_line.find(".zip") != std::string::npos && input_file_line.find("product/") != std::string::npos) && input_file_line.find("enu") != std::string::npos && PLMComponentList_switch == true)
+                if ((input_file_line.find(".zip") != std::string::npos && input_file_line.find("product/") != std::string::npos) && PLMComponentList_switch == true)
                 {
                     input_file_line.erase(0, input_file_line.find_first_of("=") + 1);
                     temp_vector.push_back(input_file_line);
                 }
                 
                 /*
-                if ((input_file_line.find(".zip") != std::string::npos && input_file_line.find("product/") != std::string::npos) && PLMComponentList_switch == true)
+                // Section below only locates "product/" lines with "enu"
+                if ((input_file_line.find(".zip") != std::string::npos && input_file_line.find("product/") != std::string::npos) && input_file_line.find("enu") != std::string::npos && PLMComponentList_switch == true)
                 {
                     input_file_line.erase(0, input_file_line.find_first_of("=") + 1);
                     temp_vector.push_back(input_file_line);
@@ -65,8 +66,10 @@ class Common_Class
             }
             for (int i = 1; i <= temp_vector.size() - 1; i++)
             {
-                std::cout << "[" << i << "]" << " " << temp_vector[i] << "\n";
+                //std::cout << "[" << i << "]" << " " << temp_vector[i] << "\n";
+                std::cout << temp_vector[i] << "\n";
             }
+            std:: cout << "END" << "\n";
             // Note: Server.ini has line repeats.
             /*
                 [16] product / enu / ESServerAgent.zip, 202183
@@ -79,7 +82,8 @@ class Common_Class
             temp_vector.erase(unique(temp_vector.begin(), temp_vector.end()), temp_vector.end());
             for (int i = 1; i <= temp_vector.size() - 1; i++)
             {
-                std::cout << "[" << i << "]" << " " << temp_vector[i] << "\n";
+                //std::cout << "[" << i << "]" << " " << temp_vector[i] << "\n";
+                std::cout << temp_vector[i] << "\n";
             }
         }
         /*
@@ -275,9 +279,11 @@ class Common_Class
             {
                 std::cout << key        // string (key)
                     << ':'
-                    << val        // string's value
+                    << val*2        // string's value
                     << "\n";
             }
+            // Downloaded files x 2 [SIG files] + 1 [Server.ini file]
+            std::cout << "Total_File_Count: " << total_file_count << " " << (total_file_count * 2) + 1 << "\n";
             std::cout << "\n";
             input_file.close();
             output_file.close();
@@ -719,7 +725,7 @@ class PLMComponentList_Class
             while (std::getline(input_file, input_file_line))
             {
                 // PLMComponentList Detection First.
-                if (input_file_line.find(".zip") != std::string::npos && input_file_line.find("product/") != std::string::npos)
+                if (input_file_line.find(".zip") != std::string::npos && input_file_line.find("product/") != std::string::npos && input_file_line.find("enu") != std::string::npos)
                 {
                     // http://osce14-p.activeupdate.trendmicro.com/activeupdate/product/osce14/enu/AddonSvcTMSM.zip - Massive file.
 
@@ -790,8 +796,6 @@ int main()
 
     /* REMOVE AFTER TESTING TEMP_METHOD; */
     Common_Class().temp_method();
-    // Downloaded files x 2 [SIG files] + 1 [Server.ini file]
-    std::cout << "Total_File_Count: " << total_file_count << " " << (total_file_count*2) + 1 << "\n";
 
     std::vector<std::string> options_vector = 
     {
