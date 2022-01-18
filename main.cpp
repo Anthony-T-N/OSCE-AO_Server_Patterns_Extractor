@@ -26,8 +26,10 @@ class Common_Class
         void temp_method()
         {
             std::vector<std::string> temp_vector;
+            std::vector<std::string> pattern_temp_vector;
             bool PLMComponentList_switch = false;
             bool other_switch = false;
+            std::string temp_file_line;
 
             // 1) Open server.ini file;
             std::ifstream input_file;
@@ -38,6 +40,12 @@ class Common_Class
             std::string input_file_line;
             while (std::getline(input_file, input_file_line))
             {
+                if ((input_file_line.find("pattern/") != std::string::npos))
+                {
+                    temp_file_line = input_file_line;
+                    temp_file_line.erase(0, temp_file_line.find_first_of("=") + 1);
+                    pattern_temp_vector.push_back(temp_file_line);
+                }
                 if (input_file_line == "" && other_switch == false)
                 {
                     PLMComponentList_switch = false;
@@ -48,28 +56,27 @@ class Common_Class
                     other_switch = true;
                     continue;
                 }
-                
+                /*
                 if ((input_file_line.find(".zip") != std::string::npos && input_file_line.find("product/") != std::string::npos) && PLMComponentList_switch == true)
                 {
                     input_file_line.erase(0, input_file_line.find_first_of("=") + 1);
                     temp_vector.push_back(input_file_line);
                 }
+                */
                 
-                /*
                 // Section below only locates "product/" lines with "enu"
                 if ((input_file_line.find(".zip") != std::string::npos && input_file_line.find("product/") != std::string::npos) && input_file_line.find("enu") != std::string::npos && PLMComponentList_switch == true)
                 {
                     input_file_line.erase(0, input_file_line.find_first_of("=") + 1);
                     temp_vector.push_back(input_file_line);
                 }
-                */
             }
             for (int i = 1; i <= temp_vector.size() - 1; i++)
             {
                 //std::cout << "[" << i << "]" << " " << temp_vector[i] << "\n";
                 std::cout << temp_vector[i] << "\n";
             }
-            std:: cout << "END" << "\n";
+            std::cout << "END" << "\n";
             // Note: Server.ini has line repeats.
             /*
                 [16] product / enu / ESServerAgent.zip, 202183
@@ -85,6 +92,15 @@ class Common_Class
                 //std::cout << "[" << i << "]" << " " << temp_vector[i] << "\n";
                 std::cout << temp_vector[i] << "\n";
             }
+            std::cout << "pattern_temp_vector" << "\n";
+            sort(pattern_temp_vector.begin(), pattern_temp_vector.end());
+            pattern_temp_vector.erase(unique(pattern_temp_vector.begin(), pattern_temp_vector.end()), pattern_temp_vector.end());
+            for (int i = 1; i <= pattern_temp_vector.size() - 1; i++)
+            {
+                //std::cout << "[" << i << "]" << " " << temp_vector[i] << "\n";
+                std::cout << "[" << i << "]" << pattern_temp_vector[i] << "\n";
+            }
+
         }
         /*
         Method to count all lines in the server.ini file that contain pattern/ , engine/ , product/ for integrity purposes.
