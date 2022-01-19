@@ -18,15 +18,41 @@ float progress = 0.0;
 int bar_width = 100;
 std::map<std::string, float> component_map;
 std::map<std::string, int> file_integrity_count_map;
-int total_file_count = 0;
 
 class Common_Class
 {       
     public:
-        void temp_method()
+        /*
+        Method to count all lines in the server.ini file that contain pattern/ , engine/ , product/ for integrity purposes.
+        */
+        void OSCE_AO_file_integrity_check()
         {
+            /*
+            // True total count = ([All lines with pattern, engine, product] x 2) - [Duplicates] - [Files not downloaded] + server.ini file.
+            if (input_file_line.find("pattern/") != std::string::npos)
+            {
+                file_integrity_count_map["pattern/"]++;
+                total_file_count++;
+            }
+            else if (input_file_line.find("engine/") != std::string::npos)
+            {
+                file_integrity_count_map["engine/"]++;
+                total_file_count++;
+            }
+            else if (input_file_line.find("product/") != std::string::npos)
+            {
+                file_integrity_count_map["product/"]++;
+                total_file_count++;
+            }
+            if (input_file_line.find("AddonSvcTMSM.zip") != std::string::npos)
+            {
+                file_integrity_count_map["AddonSvcTMSM.zip"]++;
+            }
+            */
+
             std::vector<std::string> temp_vector;
-            std::vector<std::string> pattern_temp_vector;
+            std::vector<std::string> pattern_line_vector;
+            std::vector<std::string> engine_line_vector;
             bool PLMComponentList_switch = false;
             bool other_switch = false;
             std::string temp_file_line;
@@ -40,11 +66,17 @@ class Common_Class
             std::string input_file_line;
             while (std::getline(input_file, input_file_line))
             {
-                if ((input_file_line.find("pattern/") != std::string::npos))
+                if (input_file_line.find("pattern/") != std::string::npos)
                 {
                     temp_file_line = input_file_line;
                     temp_file_line.erase(0, temp_file_line.find_first_of("=") + 1);
-                    pattern_temp_vector.push_back(temp_file_line);
+                    pattern_line_vector.push_back(temp_file_line);
+                }
+                else if (input_file_line.find("engine/") != std::string::npos)
+                {
+                    temp_file_line = input_file_line;
+                    temp_file_line.erase(0, temp_file_line.find_first_of("=") + 1);
+                    engine_line_vector.push_back(temp_file_line);
                 }
                 if (input_file_line == "" && other_switch == false)
                 {
@@ -92,42 +124,23 @@ class Common_Class
                 //std::cout << "[" << i << "]" << " " << temp_vector[i] << "\n";
                 std::cout << temp_vector[i] << "\n";
             }
-            std::cout << "pattern_temp_vector" << "\n";
-            sort(pattern_temp_vector.begin(), pattern_temp_vector.end());
-            pattern_temp_vector.erase(unique(pattern_temp_vector.begin(), pattern_temp_vector.end()), pattern_temp_vector.end());
-            for (int i = 1; i <= pattern_temp_vector.size() - 1; i++)
+            std::cout << "pattern_line_vector" << "\n";
+            sort(pattern_line_vector.begin(), pattern_line_vector.end());
+            pattern_line_vector.erase(unique(pattern_line_vector.begin(), pattern_line_vector.end()), pattern_line_vector.end());
+            for (int i = 1; i <= pattern_line_vector.size() - 1; i++)
             {
                 //std::cout << "[" << i << "]" << " " << temp_vector[i] << "\n";
-                std::cout << "[" << i << "]" << pattern_temp_vector[i] << "\n";
+                std::cout << "[" << i << "]" << pattern_line_vector[i] << "\n";
             }
-
-        }
-        /*
-        Method to count all lines in the server.ini file that contain pattern/ , engine/ , product/ for integrity purposes.
-        */
-        void OSCE_AO_file_integrity_check(std::string input_file_line)
-        {
-            // True total count = ([All lines with pattern, engine, product] x 2) - [Duplicates] - [Files not downloaded] + server.ini file.
-
-            if (input_file_line.find("pattern/") != std::string::npos)
+            std::cout << "engine_line_vector" << "\n";
+            sort(engine_line_vector.begin(), engine_line_vector.end());
+            engine_line_vector.erase(unique(engine_line_vector.begin(), engine_line_vector.end()), engine_line_vector.end());
+            for (int i = 1; i <= engine_line_vector.size() - 1; i++)
             {
-                file_integrity_count_map["pattern/"]++;
-                total_file_count++;
+                //std::cout << "[" << i << "]" << " " << temp_vector[i] << "\n";
+                std::cout << "[" << i << "]" << engine_line_vector[i] << "\n";
             }
-            else if (input_file_line.find("engine/") != std::string::npos)
-            {
-                file_integrity_count_map["engine/"]++;
-                total_file_count++;
-            }
-            else if (input_file_line.find("product/") != std::string::npos)
-            {
-                file_integrity_count_map["product/"]++;
-                total_file_count++;
-            }
-            if (input_file_line.find("AddonSvcTMSM.zip") != std::string::npos)
-            {
-                file_integrity_count_map["AddonSvcTMSM.zip"]++;
-            }
+            std::cout << pattern_line_vector.size()*2 << " " << engine_line_vector.size()*2 << " " << temp_vector.size()*2 << "\n";
         }
         static size_t write_data(void* ptr, size_t size, size_t nmemb, void* stream)
         {
@@ -198,8 +211,6 @@ class Common_Class
 
             while (std::getline(input_file, input_file_line))
             {
-                OSCE_AO_file_integrity_check(input_file_line);
-
                 if (input_file_line.find("[Server]") != std::string::npos)
                 {
                     std::cout << "[+] [Server] Section Found;" << "\n";
@@ -298,8 +309,6 @@ class Common_Class
                     << val*2        // string's value
                     << "\n";
             }
-            // Downloaded files x 2 [SIG files] + 1 [Server.ini file]
-            std::cout << "Total_File_Count: " << total_file_count << " " << (total_file_count * 2) + 1 << "\n";
             std::cout << "\n";
             input_file.close();
             output_file.close();
@@ -810,8 +819,8 @@ int main()
     baseline_obj.root_folder_creation();
     baseline_obj.comment_server_section();
 
-    /* REMOVE AFTER TESTING TEMP_METHOD; */
-    Common_Class().temp_method();
+    /* REMOVE AFTER TESTING OSCE_AO_file_integrity_check method; */
+    Common_Class().OSCE_AO_file_integrity_check();
 
     std::vector<std::string> options_vector = 
     {
@@ -925,7 +934,6 @@ int main()
         // Reset progress bar.
         // Is this needed when other methods from other classes already reset the progress variable.
         progress = 0.0;
-        total_file_count = 0;
     }
     std::cout << "[!] END" << "\n";
     std::cout << "[!] Exiting..." << "\n\n";
