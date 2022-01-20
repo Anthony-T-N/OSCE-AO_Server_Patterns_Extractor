@@ -17,7 +17,6 @@ const std::string generic_download_path = "\\pattern\\";
 float progress = 0.0;
 int bar_width = 100;
 std::map<std::string, float> component_map;
-std::map<std::string, int> file_integrity_count_map;
 
 class Common_Class
 {       
@@ -27,32 +26,9 @@ class Common_Class
         */
         void OSCE_AO_file_integrity_check()
         {
-            /*
-            // True total count = ([All lines with pattern, engine, product] x 2) - [Duplicates] - [Files not downloaded] + server.ini file.
-            if (input_file_line.find("pattern/") != std::string::npos)
-            {
-                file_integrity_count_map["pattern/"]++;
-                total_file_count++;
-            }
-            else if (input_file_line.find("engine/") != std::string::npos)
-            {
-                file_integrity_count_map["engine/"]++;
-                total_file_count++;
-            }
-            else if (input_file_line.find("product/") != std::string::npos)
-            {
-                file_integrity_count_map["product/"]++;
-                total_file_count++;
-            }
-            if (input_file_line.find("AddonSvcTMSM.zip") != std::string::npos)
-            {
-                file_integrity_count_map["AddonSvcTMSM.zip"]++;
-            }
-            */
-
-            std::vector<std::string> temp_vector;
             std::vector<std::string> pattern_line_vector;
             std::vector<std::string> engine_line_vector;
+            std::vector<std::string> product_line_vector;
             bool PLMComponentList_switch = false;
             bool other_switch = false;
             std::string temp_file_line;
@@ -92,23 +68,16 @@ class Common_Class
                 if ((input_file_line.find(".zip") != std::string::npos && input_file_line.find("product/") != std::string::npos) && PLMComponentList_switch == true)
                 {
                     input_file_line.erase(0, input_file_line.find_first_of("=") + 1);
-                    temp_vector.push_back(input_file_line);
+                    product_line_vector.push_back(input_file_line);
                 }
                 */
-                
                 // Section below only locates "product/" lines with "enu"
                 if ((input_file_line.find(".zip") != std::string::npos && input_file_line.find("product/") != std::string::npos) && input_file_line.find("enu") != std::string::npos && PLMComponentList_switch == true)
                 {
                     input_file_line.erase(0, input_file_line.find_first_of("=") + 1);
-                    temp_vector.push_back(input_file_line);
+                    product_line_vector.push_back(input_file_line);
                 }
             }
-            for (int i = 1; i <= temp_vector.size() - 1; i++)
-            {
-                //std::cout << "[" << i << "]" << " " << temp_vector[i] << "\n";
-                std::cout << temp_vector[i] << "\n";
-            }
-            std::cout << "END" << "\n";
             // Note: Server.ini has line repeats.
             /*
                 [16] product / enu / ESServerAgent.zip, 202183
@@ -117,30 +86,29 @@ class Common_Class
                 [19] product / enu / ESClientPlugin_x64.zip, 60460931
                 [20] product / enu / ESClientAgent.zip, 307337 <<<=============================
             */
-            sort(temp_vector.begin(), temp_vector.end());
-            temp_vector.erase(unique(temp_vector.begin(), temp_vector.end()), temp_vector.end());
-            for (int i = 1; i <= temp_vector.size() - 1; i++)
-            {
-                //std::cout << "[" << i << "]" << " " << temp_vector[i] << "\n";
-                std::cout << temp_vector[i] << "\n";
-            }
             std::cout << "pattern_line_vector" << "\n";
             sort(pattern_line_vector.begin(), pattern_line_vector.end());
             pattern_line_vector.erase(unique(pattern_line_vector.begin(), pattern_line_vector.end()), pattern_line_vector.end());
             for (int i = 1; i <= pattern_line_vector.size() - 1; i++)
             {
-                //std::cout << "[" << i << "]" << " " << temp_vector[i] << "\n";
-                std::cout << "[" << i << "]" << pattern_line_vector[i] << "\n";
+                std::cout << "[" << i << "] " << pattern_line_vector[i] << "\n";
             }
             std::cout << "engine_line_vector" << "\n";
             sort(engine_line_vector.begin(), engine_line_vector.end());
             engine_line_vector.erase(unique(engine_line_vector.begin(), engine_line_vector.end()), engine_line_vector.end());
             for (int i = 1; i <= engine_line_vector.size() - 1; i++)
             {
-                //std::cout << "[" << i << "]" << " " << temp_vector[i] << "\n";
-                std::cout << "[" << i << "]" << engine_line_vector[i] << "\n";
+                std::cout << "[" << i << "] " << engine_line_vector[i] << "\n";
             }
-            std::cout << pattern_line_vector.size()*2 << " " << engine_line_vector.size()*2 << " " << temp_vector.size()*2 << "\n";
+            std::cout << "product_line_vector" << "\n";
+            sort(product_line_vector.begin(), product_line_vector.end());
+            product_line_vector.erase(unique(product_line_vector.begin(), product_line_vector.end()), product_line_vector.end());
+            for (int i = 1; i <= product_line_vector.size() - 1; i++)
+            {
+                std::cout << "[" << i << "] " << product_line_vector[i] << "\n";
+            }
+            std::cout << "Count Summary: " << "\n";
+            std::cout << "Pattern_lines: " << pattern_line_vector.size()*2 << " | Engine_lines: " << engine_line_vector.size()*2 << " | Product_lines: " << product_line_vector.size()*2 << "\n";
         }
         static size_t write_data(void* ptr, size_t size, size_t nmemb, void* stream)
         {
@@ -286,7 +254,8 @@ class Common_Class
                     }
                     engine_switch = true;
                 }
-                if (input_file_line.find(".zip") != std::string::npos && input_file_line.find("product/") != std::string::npos)
+                //if (input_file_line.find(".zip") != std::string::npos && input_file_line.find("product/") != std::string::npos) <--- Uncomment to count all PLMComponentList files including enu. 
+                if (input_file_line.find(".zip") != std::string::npos && input_file_line.find("product/") != std::string::npos && input_file_line.find("enu") != std::string::npos)
                 {
                     component_map["PLMComponentList"]++;
                 }
@@ -298,15 +267,6 @@ class Common_Class
                 std::cout << key        // string (key)
                     << ':'
                     << val        // string's value
-                    << "\n";
-            }
-            std::cout << "\n";
-            std::cout << "[DEBUG] File Integrity Count Summary" << "\n";
-            for (auto const& [key, val] : file_integrity_count_map)
-            {
-                std::cout << key        // string (key)
-                    << ':'
-                    << val*2        // string's value
                     << "\n";
             }
             std::cout << "\n";
