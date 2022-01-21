@@ -26,6 +26,15 @@ class Common_Class
         */
         void OSCE_AO_file_integrity_check()
         {
+            std::cout << "[DEBUG] Component Count Summary" << "\n";
+            for (auto const& [key, val] : component_map)
+            {
+                std::cout << key        // string (key)
+                    << ':'
+                    << val        // string's value
+                    << "\n";
+            }
+            std::cout << "\n";
             std::vector<std::string> pattern_line_vector;
             std::vector<std::string> engine_line_vector;
             std::vector<std::string> product_line_vector;
@@ -109,6 +118,7 @@ class Common_Class
             }
             std::cout << "Count Summary: " << "\n";
             std::cout << "Pattern_lines: " << pattern_line_vector.size()*2 << " | Engine_lines: " << engine_line_vector.size()*2 << " | Product_lines: " << product_line_vector.size()*2 << "\n";
+            std::cout << "\n";
         }
         static size_t write_data(void* ptr, size_t size, size_t nmemb, void* stream)
         {
@@ -259,15 +269,6 @@ class Common_Class
                 {
                     component_map["PLMComponentList"]++;
                 }
-            }
-            std::cout << "\n";
-            std::cout << "[DEBUG] Component Count Summary" << "\n";
-            for (auto const& [key, val] : component_map)
-            {
-                std::cout << key        // string (key)
-                    << ':'
-                    << val        // string's value
-                    << "\n";
             }
             std::cout << "\n";
             input_file.close();
@@ -769,8 +770,8 @@ int main()
 {
     std::cout << "=======================================" << "\n";
     std::cout << "- OSCE-AO_Server_Patterns_Extractor console application" << "\n";
-    std::cout << "- Console Application Version: 1" << "\n";
-    std::cout << "- Created By: Anthony N." << "\n";
+    std::cout << "- Console Application Version: 1.0" << "\n";
+    std::cout << "- Created By: Anthony-T-N." << "\n";
     std::cout << "- Current location of executable: " << std::filesystem::current_path() << "\n";
     std::cout << "=======================================" << "\n\n";
 
@@ -778,9 +779,6 @@ int main()
     baseline_obj.extract_serverini_file();
     baseline_obj.root_folder_creation();
     baseline_obj.comment_server_section();
-
-    /* REMOVE AFTER TESTING OSCE_AO_file_integrity_check method; */
-    Common_Class().OSCE_AO_file_integrity_check();
 
     std::vector<std::string> options_vector = 
     {
@@ -794,7 +792,8 @@ int main()
         "Download TRENDXLM (Unknown Pattern(s)) files",
         "Download ENGINE (Unknown Pattern(s)) files",
         "Download PLMComponentList (Unknown Pattern(s)) files",
-        "Download ALL pattern files"
+        "Download ALL pattern files",
+        "DEBUG MODE"
     };
     while (true)
     {
@@ -886,6 +885,11 @@ int main()
             ENGINE_Class().engine_pattern_identification();
             PLMComponentList_Class().PLMComponentList_pattern_identification();
             std::cout << "[+] Completed downloading ALL pattern files" << "\n\n";
+        }
+        else if (user_input == "11")
+        {
+            /* REMOVE AFTER TESTING OSCE_AO_file_integrity_check method; */
+            Common_Class().OSCE_AO_file_integrity_check();
         }
         else if (user_input == "exit")
         {
