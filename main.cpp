@@ -102,6 +102,7 @@ class Common_Class
             {
                 std::cout << "[" << i << "] " << pattern_line_vector[i] << "\n";
             }
+            std::cout << "\n";
             std::cout << "engine_line_vector" << "\n";
             sort(engine_line_vector.begin(), engine_line_vector.end());
             engine_line_vector.erase(unique(engine_line_vector.begin(), engine_line_vector.end()), engine_line_vector.end());
@@ -109,6 +110,7 @@ class Common_Class
             {
                 std::cout << "[" << i << "] " << engine_line_vector[i] << "\n";
             }
+            std::cout << "\n";
             std::cout << "product_line_vector" << "\n";
             sort(product_line_vector.begin(), product_line_vector.end());
             product_line_vector.erase(unique(product_line_vector.begin(), product_line_vector.end()), product_line_vector.end());
@@ -116,8 +118,10 @@ class Common_Class
             {
                 std::cout << "[" << i << "] " << product_line_vector[i] << "\n";
             }
+            std::cout << "\n";
             std::cout << "Count Summary: " << "\n";
             std::cout << "Pattern_lines: " << pattern_line_vector.size()*2 << " | Engine_lines: " << engine_line_vector.size()*2 << " | Product_lines: " << product_line_vector.size()*2 << "\n";
+            std::cout << "File total: " << (pattern_line_vector.size() * 2) + (engine_line_vector.size() * 2) + (product_line_vector.size() * 2) << " + 1 (server.ini)" << "\n";
             std::cout << "\n";
         }
         static size_t write_data(void* ptr, size_t size, size_t nmemb, void* stream)
@@ -621,7 +625,6 @@ class ENGINE_Class
                     E.22000010=SSENGINE_SSAPI32_V6,engine/ssapi32_v6/SSAPI32_v62-4015.zip,6.2.4015,592305,6.0.1000
                     E.22000020=SSENGINE_SSAPI64_V6,engine/ssapi64_v6/SSAPI64_v62-4015.zip,6.2.4015,897467,6.0.1000
                     */
-
                     std::string temp_line = input_file_line;
                     temp_line.erase(0, temp_line.find_first_of("/"));
                     temp_line.erase(temp_line.find_last_of("/") + 1);
@@ -793,7 +796,7 @@ int main()
         "Download ENGINE (Unknown Pattern(s)) files",
         "Download PLMComponentList (Unknown Pattern(s)) files",
         "Download ALL pattern files",
-        "DEBUG MODE"
+        "OSCE_AO_file_integrity_check"
     };
     while (true)
     {
@@ -873,7 +876,7 @@ int main()
         }
         else if (user_input == "10")
         {
-            // [-] TODO: Reset progress bar after every executed method.
+            // [+] TODO: Reset progress bar after every executed method.
             ICRC_Class().icrc_pattern_identification();
             VSAPI_Class().vsapi_pattern_identification();
             TSCPTN_Class().tscptn_pattern_identification();
