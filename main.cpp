@@ -102,8 +102,17 @@ class Common_Class
             {
                 std::cout << "[" << i << "] " << pattern_line_vector[i] << "\n";
             }
+            /*
+            What's wrong with these two lines:
+            [10] ATSE_WIN32_OSCE,engine/engv_atse_win32_v12500-1004.zip,12.500.1004,1740445,6.510.1002
+            [15] VSAPI32_NT_I386,engine/engv_nt386_v12500-1004.zip,12.500.1004,1350445,6.510.1002
+            */
             std::cout << "\n";
             std::cout << "engine_line_vector" << "\n";
+            for (int i = 1; i <= engine_line_vector.size() - 1; i++)
+            {
+                std::cout << "[" << i << "] " << engine_line_vector[i] << "\n";
+            }
             sort(engine_line_vector.begin(), engine_line_vector.end());
             engine_line_vector.erase(unique(engine_line_vector.begin(), engine_line_vector.end()), engine_line_vector.end());
             for (int i = 1; i <= engine_line_vector.size() - 1; i++)
@@ -123,6 +132,8 @@ class Common_Class
             std::cout << "Pattern_lines: " << pattern_line_vector.size()*2 << " | Engine_lines: " << engine_line_vector.size()*2 << " | Product_lines: " << product_line_vector.size()*2 << "\n";
             std::cout << "File total: " << (pattern_line_vector.size() * 2) + (engine_line_vector.size() * 2) + (product_line_vector.size() * 2) << " + 1 (server.ini)" << "\n";
             std::cout << "\n";
+            std::cout << "Press enter to continue . . ." << "\n";
+            std::cin.get();
         }
         static size_t write_data(void* ptr, size_t size, size_t nmemb, void* stream)
         {
@@ -267,6 +278,7 @@ class Common_Class
                         component_map["[ENGINE]"]++;
                     }
                     engine_switch = true;
+                    std::cout << input_file_line << "\n";
                 }
                 //if (input_file_line.find(".zip") != std::string::npos && input_file_line.find("product/") != std::string::npos) <--- Uncomment to count all PLMComponentList files including enu. 
                 if (input_file_line.find(".zip") != std::string::npos && input_file_line.find("product/") != std::string::npos && input_file_line.find("enu") != std::string::npos)
@@ -625,6 +637,7 @@ class ENGINE_Class
                     E.22000010=SSENGINE_SSAPI32_V6,engine/ssapi32_v6/SSAPI32_v62-4015.zip,6.2.4015,592305,6.0.1000
                     E.22000020=SSENGINE_SSAPI64_V6,engine/ssapi64_v6/SSAPI64_v62-4015.zip,6.2.4015,897467,6.0.1000
                     */
+                    // [-] TODO: Refine.
                     std::string temp_line = input_file_line;
                     temp_line.erase(0, temp_line.find_first_of("/"));
                     temp_line.erase(temp_line.find_last_of("/") + 1);
