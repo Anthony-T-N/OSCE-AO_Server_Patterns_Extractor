@@ -98,34 +98,25 @@ class Common_Class
             std::cout << "pattern_line_vector" << "\n";
             sort(pattern_line_vector.begin(), pattern_line_vector.end());
             pattern_line_vector.erase(unique(pattern_line_vector.begin(), pattern_line_vector.end()), pattern_line_vector.end());
-            for (int i = 1; i <= pattern_line_vector.size() - 1; i++)
+            for (int i = 0; i <= pattern_line_vector.size() - 1; i++)
             {
-                std::cout << "[" << i << "] " << pattern_line_vector[i] << "\n";
+                std::cout << "[" << i + 1 << "] " << pattern_line_vector[i] << "\n";
             }
-            /*
-            What's wrong with these two lines:
-            [10] ATSE_WIN32_OSCE,engine/engv_atse_win32_v12500-1004.zip,12.500.1004,1740445,6.510.1002
-            [15] VSAPI32_NT_I386,engine/engv_nt386_v12500-1004.zip,12.500.1004,1350445,6.510.1002
-            */
             std::cout << "\n";
             std::cout << "engine_line_vector" << "\n";
-            for (int i = 1; i <= engine_line_vector.size() - 1; i++)
-            {
-                std::cout << "[" << i << "] " << engine_line_vector[i] << "\n";
-            }
             sort(engine_line_vector.begin(), engine_line_vector.end());
             engine_line_vector.erase(unique(engine_line_vector.begin(), engine_line_vector.end()), engine_line_vector.end());
-            for (int i = 1; i <= engine_line_vector.size() - 1; i++)
+            for (int i = 0; i <= engine_line_vector.size() - 1; i++)
             {
-                std::cout << "[" << i << "] " << engine_line_vector[i] << "\n";
+                std::cout << "[" << i + 1 << "] " << engine_line_vector[i] << "\n";
             }
             std::cout << "\n";
             std::cout << "product_line_vector" << "\n";
             sort(product_line_vector.begin(), product_line_vector.end());
             product_line_vector.erase(unique(product_line_vector.begin(), product_line_vector.end()), product_line_vector.end());
-            for (int i = 1; i <= product_line_vector.size() - 1; i++)
+            for (int i = 0; i <= product_line_vector.size() - 1; i++)
             {
-                std::cout << "[" << i << "] " << product_line_vector[i] << "\n";
+                std::cout << "[" << i + 1 << "] " << product_line_vector[i] << "\n";
             }
             std::cout << "\n";
             std::cout << "Count Summary: " << "\n";
@@ -278,7 +269,6 @@ class Common_Class
                         component_map["[ENGINE]"]++;
                     }
                     engine_switch = true;
-                    std::cout << input_file_line << "\n";
                 }
                 //if (input_file_line.find(".zip") != std::string::npos && input_file_line.find("product/") != std::string::npos) <--- Uncomment to count all PLMComponentList files including enu. 
                 if (input_file_line.find(".zip") != std::string::npos && input_file_line.find("product/") != std::string::npos && input_file_line.find("enu") != std::string::npos)
