@@ -628,11 +628,10 @@ class ENGINE_Class
                     E.22000020=SSENGINE_SSAPI64_V6,engine/ssapi64_v6/SSAPI64_v62-4015.zip,6.2.4015,897467,6.0.1000
                     */
                     // [-] TODO: Refine.
-                    std::string temp_line = input_file_line;
-                    temp_line.erase(0, temp_line.find_first_of("/"));
-                    temp_line.erase(temp_line.find_last_of("/") + 1);
-                    std::filesystem::create_directories(current_root_folder + "\\engine\\" + temp_line);
-                    ssapi_temp_path = temp_line;
+                    ssapi_temp_path = input_file_line;
+                    ssapi_temp_path.erase(0, ssapi_temp_path.find_first_of("/"));
+                    ssapi_temp_path.erase(ssapi_temp_path.find_last_of("/") + 1);
+                    std::filesystem::create_directories(current_root_folder + "\\engine\\" + ssapi_temp_path);
                     SSAPI_switch = true;
                 }
                 if (engine_switch == true)
@@ -693,17 +692,6 @@ class ENGINE_Class
         }
 };
 
-// [+] TODO: Missing following files:
-/*
-[Info_602_10000_1_1]
-Version=6.0
-Build=3011
-Path=product/enu/AddonSvcTmeeDepTool.zip,217053835
-PA_Version=6.0.3011
-Update_Path=product/enu/TmeeDepPatchAgent.zip,209602
-Min=1.0
-Max=7.0
-*/
 class PLMComponentList_Class
 {
     public:
@@ -721,21 +709,17 @@ class PLMComponentList_Class
                 {
                     // http://osce14-p.activeupdate.trendmicro.com/activeupdate/product/osce14/enu/AddonSvcTMSM.zip - Massive file.
 
-                    // New function here:
-                    // Path=product/osce14/deu/AddonSvcTMSM.zip,626808853
-                    // product/osce14/xxxx/AddonSvcTMSM.zip
-                    // Create /xxxx/ directory.
-
-                    std::string country_code = input_file_line;
-                    country_code.erase(country_code.find_last_of("/"));
-                    country_code.erase(0, country_code.find_last_of("/") + 1);
+                    std::string country_code = input_file_line;                 // << Path=product/osce14/deu/AddonSvcTMSM.zip,626808853
+                    country_code.erase(country_code.find_last_of("/"));         // << product/osce14/deu/AddonSvcTMSM.zip
+                    country_code.erase(0, country_code.find_last_of("/") + 1);  // << deu
+                    
                     /*
                     std::cout << country_code << "\n";
                     std::cout << current_root_folder + "\\pattern\\product\\osce14\\" + country_code + "\\" << "\n";
                     //std::cin.get();
                     */
 
-                    // Directory check here.
+                    // Directory check here. Create country code folder if it doesn't exist.
                     if (std::filesystem::is_directory(current_root_folder + "\\product\\osce14\\" + country_code) == false)
                     {
                         std::filesystem::create_directories(current_root_folder + "\\product\\osce14\\" + country_code + "\\");
@@ -753,16 +737,10 @@ class PLMComponentList_Class
                     // [-] TODO: Check size of file before downloading.
                     if (input_file_line.find("osce14") != std::string::npos)
                     {
-                        //std::cout << "Contains osce14" << "\n";
-                        //std::cout << input_file_line << "\n";
-                        //std::cout << "\n";
                         Common_Class::download_file_allocation(input_file_line, ("\\product\\osce14\\" + country_code + "\\"), component_map["PLMComponentList"]);
                     }
                     else
                     {
-                        //std::cout << "===Does not contain osce14===" << "\n";
-                        //std::cout << input_file_line << "\n";
-                        //std::cout << "\n";
                         Common_Class::download_file_allocation(input_file_line, ("\\product\\" + country_code + "\\"), component_map["PLMComponentList"]);
                     }
                 }
