@@ -191,6 +191,7 @@ class Common_Class
             bool commenting_enabled = false;
             bool server_section_found = false;
             bool tmfwptn_switch = false;
+            bool trendxlm_switch = false;
             bool engine_switch = false;
 
             while (std::getline(input_file, input_file_line))
@@ -215,13 +216,10 @@ class Common_Class
                 }
                 output_file << input_file_line << "\n";
                 
-
-                // Temporary if statement to test progress bar.
                 if (input_file_line.find("v_") != std::string::npos && input_file_line.find("P.4") != std::string::npos || input_file_line.find("vsapi") != std::string::npos && input_file_line.find("P.4") != std::string::npos)
                 {
                     component_map["vsapi"]++;
                 }
-                // Go through all lines in the "server.ini" file until a line contains "icrc".
                 if (input_file_line.find("icrc") != std::string::npos)
                 {
                     component_map["icrc"]++;
@@ -242,7 +240,6 @@ class Common_Class
                 {
                     component_map["sspda6_"]++;
                 }
-                // INFO: Identifies line with "tmfwptn" and extract all lines below it.
                 if (input_file_line == "")
                 {
                     tmfwptn_switch = false;
@@ -252,9 +249,13 @@ class Common_Class
                     tmfwptn_switch = true;
                     component_map["tmfwptn"]++;
                 }
-                // [-] TODO: Testing shows 128%. Fix progress value of "trendxlm_".
-                if (input_file_line.find("trendxlm_") != std::string::npos)
+                if (input_file_line == "")
                 {
+                    trendxlm_switch = false;
+                }
+                else if (input_file_line.find("trendxlm_") != std::string::npos || input_file_line.find("pattern") != std::string::npos && trendxlm_switch == true)
+                {
+                    trendxlm_switch = true;
                     component_map["trendxlm_"]++;
                 }
                 if (input_file_line == "")
@@ -263,7 +264,6 @@ class Common_Class
                 }
                 else if (input_file_line.find("[ENGINE]") != std::string::npos || engine_switch == true)
                 {
-                    // Line "[ENGINE]" is included as part of count.
                     if (engine_switch == true)
                     {
                         component_map["[ENGINE]"]++;
@@ -627,7 +627,6 @@ class ENGINE_Class
                     E.22000010=SSENGINE_SSAPI32_V6,engine/ssapi32_v6/SSAPI32_v62-4015.zip,6.2.4015,592305,6.0.1000
                     E.22000020=SSENGINE_SSAPI64_V6,engine/ssapi64_v6/SSAPI64_v62-4015.zip,6.2.4015,897467,6.0.1000
                     */
-                    // [-] TODO: Refine.
                     ssapi_temp_path = input_file_line;
                     ssapi_temp_path.erase(0, ssapi_temp_path.find_first_of("/"));
                     ssapi_temp_path.erase(ssapi_temp_path.find_last_of("/") + 1);
