@@ -42,12 +42,10 @@ class Common_Class
             bool other_switch = false;
             std::string temp_file_line;
 
-            // 1) Open server.ini file;
             std::ifstream input_file;
             Common_Class::open_ini();
             input_file.open(current_root_folder + "/server.ini");
 
-            // 2) Locate PLMComponentList;
             std::string input_file_line;
             while (std::getline(input_file, input_file_line))
             {
@@ -395,7 +393,6 @@ class ICRC_Class
             std::string input_file_line;
             while (std::getline(input_file, input_file_line))
             {
-                // Go through all lines in the "server.ini" file until a line contains "icrc".
                 if (input_file_line.find("icrc") != std::string::npos)
                 {
                     Common_Class::download_file_allocation(input_file_line, icrc_download_path, component_map["icrc"]);
@@ -418,7 +415,6 @@ class VSAPI_Class
             std::string input_file_line;
             while (std::getline(input_file, input_file_line))
             {
-                // Go through all lines in the "server.ini" file until a line contains "vsapi".
                 if (input_file_line.find("v_") != std::string::npos && input_file_line.find("P.4") != std::string::npos || input_file_line.find("vsapi") != std::string::npos && input_file_line.find("P.4") != std::string::npos)
                 {
                     Common_Class::download_file_allocation(input_file_line, generic_download_path, component_map["vsapi"]);
@@ -441,7 +437,6 @@ class TSCPTN_Class
             std::string input_file_line;
             while (std::getline(input_file, input_file_line))
             {
-                // Go through all lines in the "server.ini" file until a line contains "tscptn" or "tsc".
                 if (input_file_line.find("tsc") != std::string::npos || input_file_line.find("tscptn") != std::string::npos)
                 {
                     Common_Class::download_file_allocation(input_file_line, generic_download_path, component_map["tscptn"]);
@@ -581,7 +576,6 @@ class TRENDXLM_Class
                 {
                     trendxlm_switch = true;
                 }
-                // Go through all lines in the "server.ini" file until a line contains "tscptn" or "tsc".
                 if (input_file_line.find("pattern") != std::string::npos && trendxlm_switch == true)
                 {
                     Common_Class::download_file_allocation(input_file_line, generic_download_path, component_map["trendxlm_"]);
