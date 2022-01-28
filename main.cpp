@@ -21,6 +21,10 @@ std::map<std::string, float> component_map;
 class Common_Class
 {       
     public:
+        void vector_item_duplicate_removal(std::vector<std::string> line_vector)
+        {
+
+        }
         /*
         Method to count all lines in the server.ini file that contain pattern/ , engine/ , product/ for integrity purposes.
         */
@@ -85,14 +89,7 @@ class Common_Class
                     product_line_vector.push_back(input_file_line);
                 }
             }
-            // Note: Server.ini has line repeats.
-            /*
-                [16] product / enu / ESServerAgent.zip, 202183
-                [17] product / enu / ESClientPlugin_win32.zip, 47668860
-                [18] product / enu / ESClientAgent.zip, 307337 <<<=============================
-                [19] product / enu / ESClientPlugin_x64.zip, 60460931
-                [20] product / enu / ESClientAgent.zip, 307337 <<<=============================
-            */
+            // Removing duplicates to calculate true count total. 
             std::cout << "pattern_line_vector" << "\n";
             sort(pattern_line_vector.begin(), pattern_line_vector.end());
             pattern_line_vector.erase(unique(pattern_line_vector.begin(), pattern_line_vector.end()), pattern_line_vector.end());
@@ -197,7 +194,6 @@ class Common_Class
                 if (input_file_line.find("[Server]") != std::string::npos)
                 {
                     std::cout << "[+] [Server] Section Found;" << "\n";
-                    //std::cout << input_file_line << "\n\n";
                     server_section_found = true;
                     commenting_enabled = true;
                     output_file << input_file_line << "\n";
@@ -629,17 +625,12 @@ class ENGINE_Class
                 }
                 if (engine_switch == true)
                 {
-                    // E.4=VSAPI32_NT_I386,engine/engv_nt386_v12500-1004.zip,12.500.1004,1350445,6.510.1002
-                    std::string extracted_url = input_file_line;
-                    extracted_url.erase(0, extracted_url.find_first_of(",") + 1);
-                    // engine/engv_nt386_v12500-1004.zip,12.500.1004,1350445,6.510.1002
-                    std::cout << "DEBUG: " << extracted_url << "\n";
-                    extracted_url.erase(extracted_url.find_first_of(","));
-                    // engine/engv_nt386_v12500-1004.zip
-                    std::cout << "DEBUG: " << extracted_url << "\n";
-                    extracted_url = first_url_section + extracted_url;
-                    // URL Building ends here.
-                    // http://osce14-p.activeupdate.trendmicro.com/activeupdate/engine/engv_nt386_v12500-1004.zip
+                    std::string extracted_url = input_file_line;                    // E.4=VSAPI32_NT_I386,engine/engv_nt386_v12500-1004.zip,12.500.1004,1350445,6.510.1002
+                    extracted_url.erase(0, extracted_url.find_first_of(",") + 1);   // engine/engv_nt386_v12500-1004.zip,12.500.1004,1350445,6.510.1002
+                    std::cout << "DEBUG: " << extracted_url << "\n";                
+                    extracted_url.erase(extracted_url.find_first_of(","));          // engine/engv_nt386_v12500-1004.zip
+                    std::cout << "DEBUG: " << extracted_url << "\n";                
+                    extracted_url = first_url_section + extracted_url;              // http://osce14-p.activeupdate.trendmicro.com/activeupdate/engine/engv_nt386_v12500-1004.zip
                     std::cout << "DEBUG: " << extracted_url << "\n";
                     
                     std::string full_download_path = "";
