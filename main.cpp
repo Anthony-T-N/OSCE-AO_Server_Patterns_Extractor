@@ -23,7 +23,12 @@ class Common_Class
     public:
         void vector_item_duplicate_removal(std::vector<std::string> line_vector)
         {
-
+            sort(line_vector.begin(), line_vector.end());
+            line_vector.erase(unique(line_vector.begin(), line_vector.end()), line_vector.end());
+            for (int i = 0; i <= line_vector.size() - 1; i++)
+            {
+                std::cout << "[" << i + 1 << "] " << line_vector[i] << "\n";
+            }
         }
         /*
         Method to count all lines in the server.ini file that contain pattern/ , engine/ , product/ for integrity purposes.
@@ -89,7 +94,12 @@ class Common_Class
                     product_line_vector.push_back(input_file_line);
                 }
             }
+            // Troubleshoot, new method increase total summary count.
+            vector_item_duplicate_removal(pattern_line_vector);
+            vector_item_duplicate_removal(engine_line_vector);
+            vector_item_duplicate_removal(product_line_vector);
             // Removing duplicates to calculate true count total. 
+            /*
             std::cout << "pattern_line_vector" << "\n";
             sort(pattern_line_vector.begin(), pattern_line_vector.end());
             pattern_line_vector.erase(unique(pattern_line_vector.begin(), pattern_line_vector.end()), pattern_line_vector.end());
@@ -113,6 +123,7 @@ class Common_Class
             {
                 std::cout << "[" << i + 1 << "] " << product_line_vector[i] << "\n";
             }
+            */
             std::cout << "\n";
             std::cout << "Count Summary: " << "\n";
             std::cout << "Pattern_lines: " << pattern_line_vector.size()*2 << " | Engine_lines: " << engine_line_vector.size()*2 << " | Product_lines: " << product_line_vector.size()*2 << "\n";
@@ -143,6 +154,8 @@ class Common_Class
             std::cout << "[!] Downloading to: " << "\n";
             std::cout << full_pathname << "\n\n";
 
+            std::string result = "";
+
             CURL* curl;
             FILE* fp;
             CURLcode res;
@@ -153,6 +166,8 @@ class Common_Class
                 curl_easy_setopt(curl, CURLOPT_URL, url);
                 curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);
                 curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
+                // https://stackoverflow.com/questions/7677285/how-to-get-the-length-of-a-file-without-downloading-the-file-in-a-curl-binary-ge
+                //curl_easy_getinfo(curl, CURLINFO_CONTENT_LENGTH_DOWNLOAD, result); <<<=========================================================================
                 res = curl_easy_perform(curl);
                 curl_easy_cleanup(curl);
                 if (res != CURLE_OK)
@@ -162,6 +177,7 @@ class Common_Class
                     std::cout << "\033[31m" << "WARNING WARNING WARNING" << "\033[0m" << "\n";
                 }
                 fclose(fp);
+                //std::cout << "HELLO: " << result << "\n"; <<<=========================================================================
             }
         }
         void comment_server_section()
