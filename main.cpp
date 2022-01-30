@@ -21,8 +21,9 @@ std::map<std::string, float> component_map;
 class Common_Class
 {       
     public:
-        void vector_item_duplicate_removal(std::vector<std::string> line_vector)
+        void vector_item_duplicate_removal(std::vector<std::string> &line_vector)
         {
+            // Removing duplicates to calculate true count total.
             sort(line_vector.begin(), line_vector.end());
             line_vector.erase(unique(line_vector.begin(), line_vector.end()), line_vector.end());
             for (int i = 0; i <= line_vector.size() - 1; i++)
@@ -30,11 +31,9 @@ class Common_Class
                 std::cout << "[" << i + 1 << "] " << line_vector[i] << "\n";
             }
         }
-        /*
-        Method to count all lines in the server.ini file that contain pattern/ , engine/ , product/ for integrity purposes.
-        */
         void OSCE_AO_file_integrity_check()
         {
+            // Method to count all lines in the server.ini file that contain pattern/ , engine/ , product/ for integrity purposes.
             std::cout << "[DEBUG] Component Count Summary" << "\n";
             for (auto const& [key, val] : component_map)
             {
@@ -94,36 +93,14 @@ class Common_Class
                     product_line_vector.push_back(input_file_line);
                 }
             }
-            // Troubleshoot, new method increase total summary count.
-            vector_item_duplicate_removal(pattern_line_vector);
-            vector_item_duplicate_removal(engine_line_vector);
-            vector_item_duplicate_removal(product_line_vector);
-            // Removing duplicates to calculate true count total. 
-            /*
             std::cout << "pattern_line_vector" << "\n";
-            sort(pattern_line_vector.begin(), pattern_line_vector.end());
-            pattern_line_vector.erase(unique(pattern_line_vector.begin(), pattern_line_vector.end()), pattern_line_vector.end());
-            for (int i = 0; i <= pattern_line_vector.size() - 1; i++)
-            {
-                std::cout << "[" << i + 1 << "] " << pattern_line_vector[i] << "\n";
-            }
+            vector_item_duplicate_removal(pattern_line_vector);
             std::cout << "\n";
             std::cout << "engine_line_vector" << "\n";
-            sort(engine_line_vector.begin(), engine_line_vector.end());
-            engine_line_vector.erase(unique(engine_line_vector.begin(), engine_line_vector.end()), engine_line_vector.end());
-            for (int i = 0; i <= engine_line_vector.size() - 1; i++)
-            {
-                std::cout << "[" << i + 1 << "] " << engine_line_vector[i] << "\n";
-            }
+            vector_item_duplicate_removal(engine_line_vector);
             std::cout << "\n";
             std::cout << "product_line_vector" << "\n";
-            sort(product_line_vector.begin(), product_line_vector.end());
-            product_line_vector.erase(unique(product_line_vector.begin(), product_line_vector.end()), product_line_vector.end());
-            for (int i = 0; i <= product_line_vector.size() - 1; i++)
-            {
-                std::cout << "[" << i + 1 << "] " << product_line_vector[i] << "\n";
-            }
-            */
+            vector_item_duplicate_removal(product_line_vector);
             std::cout << "\n";
             std::cout << "Count Summary: " << "\n";
             std::cout << "Pattern_lines: " << pattern_line_vector.size()*2 << " | Engine_lines: " << engine_line_vector.size()*2 << " | Product_lines: " << product_line_vector.size()*2 << "\n";
