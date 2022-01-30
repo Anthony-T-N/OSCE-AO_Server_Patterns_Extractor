@@ -7,6 +7,10 @@
 
 Overview
 -
+OSCE-AO_Server_Patterns_Extractor is the evolution of the previously created console application [Smart_Scan_Pattern_Extractor-URL_Builder](https://github.com/Anthony-T-N/Smart_Scan_Pattern_Extractor-URL_Builder#readme).
+
+
+
 How It Works
 -
 **Version 1**
