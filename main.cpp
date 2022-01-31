@@ -8,7 +8,7 @@
 #include <map>
 
 // https://stackoverflow.com/questions/21873048/getting-an-error-fopen-this-function-or-variable-may-be-unsafe-when-complin/21873153
-#pragma warning(disable:4996);
+#pragma warning(disable:4996)
 
 // Global Variables
 std::string current_root_folder = "";
@@ -26,7 +26,7 @@ class Common_Class
             // Removing duplicates to calculate true count total.
             sort(line_vector.begin(), line_vector.end());
             line_vector.erase(unique(line_vector.begin(), line_vector.end()), line_vector.end());
-            for (int i = 0; i <= line_vector.size() - 1; i++)
+            for (size_t i = 0; i <= line_vector.size() - 1; i++)
             {
                 std::cout << "[" << i + 1 << "] " << line_vector[i] << "\n";
             }
@@ -103,7 +103,7 @@ class Common_Class
             vector_item_duplicate_removal(product_line_vector);
             std::cout << "\n";
             std::cout << "Count Summary: " << "\n";
-            std::cout << "Pattern_lines: " << pattern_line_vector.size()*2 << " | Engine_lines: " << engine_line_vector.size()*2 << " | Product_lines: " << product_line_vector.size()*2 << "\n";
+            std::cout << "Pattern_lines: " << (pattern_line_vector.size() * 2) << " | Engine_lines: " << (engine_line_vector.size() * 2) << " | Product_lines: " << (product_line_vector.size() * 2) << "\n";
             std::cout << "File total: " << (pattern_line_vector.size() * 2) + (engine_line_vector.size() * 2) + (product_line_vector.size() * 2) << " + 1 (server.ini)" << "\n";
             std::cout << "\n";
             std::cout << "Press enter to continue . . ." << "\n";
@@ -312,7 +312,7 @@ class Common_Class
         static void downloading_progress_bar(int &bar_width, float &progress_bar_value)
         {
             std::cout << "\033[1;97m" << "[" << "\033[0m";
-            int pos = bar_width * progress;
+            float pos = bar_width * progress;
             for (int i = 0; i < bar_width; i++)
             {
                 if (i < pos)
@@ -502,7 +502,7 @@ class SSPDA6_Class
         }
 };
 
-// UNIQUE CLASS - Downloads a diverse range of files.
+// [INFO] UNIQUE CLASS - Downloads a diverse range of files.
 class TMFWPTN_Class
 {
     public:
@@ -762,7 +762,7 @@ int main()
         // [+] TODO: Other patterns cannot be downloaded unless ICRC patterns are downloaded first. Error unknown.
         // -> Solution: ICRC class/function creates "pattern" folder. Other class/functions do not.
         std::cout << "Select an option:" << "\n";
-        for (int i = 0; i <= options_vector.size() - 1; i++)
+        for (size_t i = 0; i <= options_vector.size() - 1; i++)
         {
             std::cout << "[" << i << "]" << " " << options_vector[i] << "\n";
         }
@@ -849,7 +849,6 @@ int main()
         }
         else if (user_input == "11")
         {
-            /* REMOVE AFTER TESTING OSCE_AO_file_integrity_check method; */
             Common_Class().OSCE_AO_file_integrity_check();
         }
         else if (user_input == "exit")
@@ -857,7 +856,7 @@ int main()
             break;
         }
         // Reset progress bar.
-        // Is this needed when other methods from other classes already reset the progress variable.
+        // Is this needed when other methods from other classes already reset the progress variable ?.
         progress = 0.0;
     }
     std::cout << "[!] END" << "\n";
