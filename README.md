@@ -52,3 +52,14 @@ http://osce14-p.activeupdate.trendmicro.com/activeupdate/pattern/vsapi349.sig
 
 [>                                                                                                   ] 0 %
 ```
+
+```text
+[!] Downloading the following:
+http://osce14-p.activeupdate.trendmicro.com/activeupdate/pattern/v_357.sig
+[!] Downloading to:
+2022-02-17\pattern\v_357.sig
+
+[====================================================================================================] 99 %
+
+[+] Completed downloading VSAPI pattern files
+```
